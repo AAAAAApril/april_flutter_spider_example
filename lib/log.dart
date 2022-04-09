@@ -28,7 +28,7 @@ class Log {
 void _longPrint(
   Object? source, {
   String? tag,
-  int limitLength = 500,
+  int limitLength = 300,
 }) {
   if (tag != null) {
     _flutterPrint(tag);

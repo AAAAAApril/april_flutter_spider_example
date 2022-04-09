@@ -1,4 +1,5 @@
 import 'package:april_spider/log.dart';
+import 'package:april_spider/novel/ouoou/bean/chapter.dart';
 import 'package:april_spider/novel/ouoou/ouoou.dart';
 import 'package:flutter/material.dart';
 
@@ -38,13 +39,45 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(children: <Widget>[
+      body: Wrap(children: <Widget>[
         ElevatedButton(
           child: const Text('Ou中文网，小说分类接口'),
           onPressed: () {
             OuOou.allClassifies().then<void>((value) {
               for (var element in value) {
                 Log.print(value: () => element);
+              }
+            });
+          },
+        ),
+        ElevatedButton(
+          child: const Text('Ou中文网，《黎明之剑》详情接口'),
+          onPressed: () {
+            OuOou.novelDetail('ou_347900').then(
+              (value) => Log.print(value: () => value),
+            );
+          },
+        ),
+        ElevatedButton(
+          child: const Text('Ou中文网，《黎明之剑》第一章详情'),
+          onPressed: () {
+            OuOou.chapterDetail(
+              novelId: 'ou_347900',
+              bean: const ChapterBean(
+                id: '30237236',
+                name: '第一章 穿越成一个视角是什么鬼',
+              ),
+            ).then(
+              (value) => Log.print(value: () => value?.paragraphs),
+            );
+          },
+        ),
+        ElevatedButton(
+          child: const Text('Ou站内搜索《黎明之剑》'),
+          onPressed: () {
+            OuOou.searchNovel(keyword: '黎明之剑').then((value) {
+              for (var element in value) {
+                Log.print(tag: '搜索结果', value: () => element);
               }
             });
           },

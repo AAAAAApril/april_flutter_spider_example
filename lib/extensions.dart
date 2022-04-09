@@ -116,3 +116,17 @@ extension FutureExt<T> on Future<T> {
     });
   }
 }
+
+extension StringExt on String {
+  ///取出满足条件的两个字符中间的数字
+  int? numberBetween(String before, String after) {
+    String? matched = RegExp('(?<=$before)\\d*(?=$after)').stringMatch(this);
+    if (matched != null) {
+      int? result = int.tryParse(matched);
+      if (result != null) {
+        return result;
+      }
+    }
+    return null;
+  }
+}
