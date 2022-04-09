@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:april_spider/configs.dart';
 import 'package:april_spider/extensions.dart';
+import 'package:april_spider/log.dart';
 import 'package:april_spider/network.dart';
 import 'package:april_spider/novel/ouoou/bean/chapter.dart';
 import 'package:april_spider/novel/ouoou/bean/novel.dart';
@@ -71,6 +72,8 @@ class OuOou {
     final List<SearchResultBean> searchResults = <SearchResultBean>[];
     try {
       for (var item in ((jsonDecode(jsonString))['results'] as List)) {
+        Log.print(tag: '搜索结果Map', value: () => item);
+        //TODO 需要解析出所有有用的数据
         try {
           final Map target = item['data']['novel_struct_realtime'];
           final String author = target['penname'];
