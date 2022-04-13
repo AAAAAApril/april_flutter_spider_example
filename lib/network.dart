@@ -28,6 +28,23 @@ class Network {
     }
   }
 
+  ///Get 请求 json
+  ///null 表示获取失败
+  static Future<Map<String, dynamic>?> getJson({
+    required Uri uri,
+    required RequestConfiguration configuration,
+  }) async {
+    String? response = await getString(uri: uri, configuration: configuration);
+    if (response == null) {
+      return null;
+    }
+    try {
+      return Map<String, dynamic>.from(jsonDecode(response) as Map);
+    } catch (_) {
+      return null;
+    }
+  }
+
   ///GET 请求一个 html 文本
   ///null 表示获取失败
   static Future<Document?> getHtmlDocument({

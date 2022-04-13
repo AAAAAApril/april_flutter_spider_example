@@ -33,12 +33,6 @@ dependencies:
   # https://pub.flutter-io.cn/packages/dart_vlc
   dart_vlc: ^0.1.9
 
-  # a base support package
-  april:
-    git:
-      url: git@github.com:AAAAAApril/flutter_develop_support.git
-      ref: version-1.6.13
-
   april_spider:
     path: ../
 

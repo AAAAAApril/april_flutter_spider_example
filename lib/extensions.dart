@@ -110,9 +110,16 @@ extension FutureExt<T> on Future<T> {
     if (!Log.isDebug) {
       return this;
     }
-    Log.print(tag: '$requestTag，start：${DateTime.now().toString()}');
+    var start = DateTime.now();
+    Log.print(tag: '$requestTag，start：${start.toString()}');
     return whenComplete(() {
-      Log.print(tag: '$requestTag，end：${DateTime.now().toString()}');
+      var end = DateTime.now();
+      Log.print(tag: '$requestTag，end：${end.toString()}');
+      Log.print(
+        tag: '$requestTag，耗时：'
+            '${end.difference(start).inMilliseconds} '
+            '毫秒。',
+      );
     });
   }
 }

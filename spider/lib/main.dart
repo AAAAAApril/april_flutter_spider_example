@@ -1,3 +1,4 @@
+import 'package:april_spider/bilibili/bilibili.dart';
 import 'package:april_spider/log.dart';
 import 'package:april_spider/novel/ouoou/bean/chapter.dart';
 import 'package:april_spider/novel/ouoou/ouoou.dart';
@@ -80,6 +81,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 Log.print(tag: '搜索结果', value: () => element);
               }
             });
+          },
+        ),
+        ElevatedButton(
+          child: const Text('BiliBili我关注的人的动态列表'),
+          onPressed: () {
+            BiliBili.followersDynamics(pageNum: 1);
           },
         ),
       ]),
