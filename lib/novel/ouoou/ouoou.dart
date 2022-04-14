@@ -73,7 +73,7 @@ class OuOou {
     try {
       for (var item in ((jsonDecode(jsonString))['results'] as List)) {
         Log.print(tag: '搜索结果Map', value: () => item);
-        //TODO 需要解析出所有有用的数据
+        //TODO 从百度站内搜索接口中需要解析出所有有用的数据
         try {
           final Map target = item['data']['novel_struct_realtime'];
           final String author = target['penname'];
