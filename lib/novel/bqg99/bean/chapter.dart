@@ -17,8 +17,16 @@ class ChapterDetailBean extends ChapterBean {
   const ChapterDetailBean({
     required String id,
     required String name,
+    required this.wordsCount,
+    required this.updateTime,
     required this.paragraphs,
   }) : super(id: id, name: name);
+
+  ///字数
+  final int wordsCount;
+
+  ///更新时间
+  final DateTime updateTime;
 
   ///章节内的所有段落
   final List<String> paragraphs;

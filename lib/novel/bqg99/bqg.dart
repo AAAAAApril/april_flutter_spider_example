@@ -1,4 +1,5 @@
 import 'package:april_spider/configs.dart';
+import 'package:april_spider/novel/bqg99/bean/chapter.dart';
 import 'package:april_spider/novel/bqg99/bean/novel.dart';
 import 'package:april_spider/novel/bqg99/bean/search.dart';
 
@@ -43,11 +44,12 @@ class Bqg99 {
   }
 
   ///根据小说 id 以及 章节 id 查询章节内容
-  static Future<void> chapterDetail({
+  static Future<ChapterDetailBean?> chapterDetail({
     required String novelId,
     required String chapterId,
     RequestConfiguration? configuration,
   }) async {
     //todo
+    return null;
   }
 }
