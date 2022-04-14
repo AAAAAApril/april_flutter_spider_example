@@ -44,6 +44,7 @@ class BiliBili {
   }
 
   /// 获取文章中的所有图片
+  ///https://www.bilibili.com/read/cv16134294?spm_id_from=444.41.list.card_article.click
   static Future<List<DynamicPicture>> articlePictures(
     ///文章 CV 号
     String articleId, {
@@ -158,7 +159,6 @@ class _ArticlePicturesConfig {
   final RequestConfiguration configuration;
 }
 
-///https://www.bilibili.com/read/cv16134294?spm_id_from=444.41.list.card_article.click
 Future<List<DynamicPicture>> _articlePictures(
   _ArticlePicturesConfig config,
 ) async {
