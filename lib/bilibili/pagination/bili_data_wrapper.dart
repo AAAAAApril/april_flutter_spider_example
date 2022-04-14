@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:april/data/pagination_data_wrapper.dart';
 
 ///分页数据包装器
@@ -23,6 +25,14 @@ class BiliPaginationDataWrapper<T> extends AbsPaginationDataWrapper<T> {
 
   @override
   bool get succeed => paginationBean != null;
+
+  Map<String, dynamic> toMap() => {
+        'paginationBean': paginationBean?.toMap(),
+        'dataLength': data.length,
+      };
+
+  @override
+  String toString() => jsonEncode(toMap());
 }
 
 ///分页数据
@@ -37,4 +47,12 @@ class BiliPaginationBean {
 
   ///下一页偏移（加载更多时需要传入）
   final String nextPageOffset;
+
+  Map<String, dynamic> toMap() => {
+        'hasMore': hasMore,
+        'nextPageOffset': nextPageOffset,
+      };
+
+  @override
+  String toString() => jsonEncode(toMap());
 }

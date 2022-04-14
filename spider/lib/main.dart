@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ElevatedButton(
           child: const Text('Ou站内搜索《黎明之剑》'),
           onPressed: () {
-            OuOou.searchNovel(keyword: '黎明之剑').then((value) {
+            OuOou.searchNovel('黎明之剑').then((value) {
               for (var element in value) {
                 Log.print(tag: '搜索结果', value: () => element);
               }
@@ -86,7 +86,18 @@ class _MyHomePageState extends State<MyHomePage> {
         ElevatedButton(
           child: const Text('BiliBili我关注的人的动态列表'),
           onPressed: () {
-            BiliBili.followersDynamics(pageNum: 1);
+            BiliBili.followersDynamics().then((value) {
+              if (!value.succeed) {
+                return;
+              }
+              Log.print(tag: '分页信息', value: () => value.toString());
+              for (var element in value.data) {
+                Log.print(
+                  tag: '动态：${element.id}',
+                  value: () => element.toMap(),
+                );
+              }
+            });
           },
         ),
       ]),

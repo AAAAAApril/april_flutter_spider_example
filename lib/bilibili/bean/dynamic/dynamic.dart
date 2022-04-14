@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:april/utils/json.dart';
 import 'package:april_spider/bilibili/bean/dynamic/dynamic_author.dart';
 import 'package:april_spider/bilibili/bean/dynamic/dynamic_content.dart';
@@ -42,6 +44,7 @@ class DynamicBean {
     DynamicBean? original;
     switch (type) {
       case DynamicType.DYNAMIC_TYPE_DRAW:
+      case DynamicType.DYNAMIC_TYPE_ARTICLE:
       case DynamicType.DYNAMIC_TYPE_AV:
         Map? contentMap = moduleDynamicJson.get('major') as Map?;
         if (contentMap != null) {
@@ -73,4 +76,16 @@ class DynamicBean {
       original: original,
     );
   }
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'author': author.toMap(),
+        'type': type.name,
+        'text': text,
+        'content': content?.toMap(),
+        'original': original?.toMap(),
+      };
+
+  @override
+  String toString() => jsonEncode(toMap());
 }

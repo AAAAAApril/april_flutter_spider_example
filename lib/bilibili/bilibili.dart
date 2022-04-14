@@ -1,9 +1,10 @@
 import 'package:april/utils/json.dart';
 import 'package:april_spider/bilibili/bean/dynamic/dynamic.dart';
+import 'package:april_spider/bilibili/bean/dynamic/dynamic_content.dart';
+import 'package:april_spider/bilibili/bean/dynamic/dynamic_type.dart';
 import 'package:april_spider/bilibili/pagination/bili_data_wrapper.dart';
 import 'package:april_spider/configs.dart';
 import 'package:april_spider/extensions.dart';
-import 'package:april_spider/log.dart';
 import 'package:april_spider/network.dart';
 import 'package:flutter/foundation.dart';
 
@@ -25,11 +26,12 @@ class BiliBili {
   ///https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all?timezone_offset=-480&type=all&offset=648556400009543680&page=2
   static Future<BiliPaginationDataWrapper<DynamicBean>> followersDynamics({
     //页码
-    required int pageNum,
+    int pageNum = 1,
     //刷新操作时不传此参数
     String? nextPageOffset,
     RequestConfiguration? configuration,
   }) {
+    assert(pageNum > 0, '页码从 1 开始');
     return compute<_FollowersDynamicsConfig,
         BiliPaginationDataWrapper<DynamicBean>>(
       _followersDynamics,
@@ -39,6 +41,21 @@ class BiliBili {
         configuration: webRequestConfiguration.merge(configuration),
       ),
     ).printRequestTime('BiliBili我关注的人们的动态');
+  }
+
+  /// 获取文章中的所有图片
+  static Future<List<DynamicPicture>> articlePictures(
+    ///文章 CV 号
+    String articleId, {
+    RequestConfiguration? configuration,
+  }) {
+    return compute<_ArticlePicturesConfig, List<DynamicPicture>>(
+      _articlePictures,
+      _ArticlePicturesConfig(
+        articleId: articleId,
+        configuration: webRequestConfiguration.merge(configuration),
+      ),
+    );
   }
 }
 
@@ -73,19 +90,53 @@ Future<BiliPaginationDataWrapper<DynamicBean>> _followersDynamics(
     ),
     configuration: config.configuration,
   );
-  Log.print(tag: '关注的人的所有动态接口结果', value: () => result);
   //失败
   if (result == null) {
     return BiliPaginationDataWrapper<DynamicBean>.failed();
   }
   //成功
   try {
-    var json = Json(result);
-    if (!json.getBool('code', trueInt: 0)) {
+    if (result['code'] != 0) {
       return BiliPaginationDataWrapper<DynamicBean>.failed();
     }
-    return BiliPaginationDataWrapper.succeed(
-      data: json.getList<DynamicBean>('items', decoder: DynamicBean.fromJson),
+    var json = Json(result['data'] as Map);
+    final List<DynamicBean> dynamics = json.getList<DynamicBean>(
+      'items',
+      decoder: DynamicBean.fromJson,
+    );
+    var articles = dynamics.map<DynamicArticle?>((element) {
+      ///发布了文章
+      if (element.type == DynamicType.DYNAMIC_TYPE_ARTICLE) {
+        return element.content?.article;
+      }
+
+      ///转发了文章
+      else if (element.type == DynamicType.DYNAMIC_TYPE_FORWARD &&
+          element.original?.type == DynamicType.DYNAMIC_TYPE_ARTICLE) {
+        return element.original?.content?.article;
+      }
+      return null;
+    }).toList();
+    articles.removeWhere((element) => element == null);
+
+    ///添加获取文章图片的任务
+    if (articles.isNotEmpty) {
+      await Future.wait<void>(
+        List<DynamicArticle>.from(articles).map<Future<void>>(
+          (e) => compute<_ArticlePicturesConfig, List<DynamicPicture>>(
+            _articlePictures,
+            _ArticlePicturesConfig(
+              articleId: e.cvId,
+              configuration: config.configuration,
+            ),
+          ).then<void>((value) {
+            e.pictures.addAll(value);
+          }),
+        ),
+      );
+    }
+    return BiliPaginationDataWrapper<DynamicBean>.succeed(
+      data: dynamics,
       paginationBean: BiliPaginationBean(
         hasMore: json.getBool('has_more'),
         nextPageOffset: json.getString('offset'),
@@ -94,4 +145,71 @@ Future<BiliPaginationDataWrapper<DynamicBean>> _followersDynamics(
   } catch (_) {
     return BiliPaginationDataWrapper<DynamicBean>.failed();
   }
+}
+
+class _ArticlePicturesConfig {
+  const _ArticlePicturesConfig({
+    required this.articleId,
+    required this.configuration,
+  });
+
+  ///文章 CV 号
+  final String articleId;
+  final RequestConfiguration configuration;
+}
+
+///https://www.bilibili.com/read/cv16134294?spm_id_from=444.41.list.card_article.click
+Future<List<DynamicPicture>> _articlePictures(
+  _ArticlePicturesConfig config,
+) async {
+  var document = await Network.getHtmlDocument(
+    uri: Uri.https(
+      'www.bilibili.com',
+      'read/${config.articleId}',
+      const <String, String>{
+        'spm_id_from': '444.41.list.card_article.click',
+      },
+    ),
+    configuration: config.configuration,
+  );
+  if (document == null) {
+    return const <DynamicPicture>[];
+  }
+  var result = <DynamicPicture>[];
+
+  ///顶部封面图
+  var coverElement = document.querySelector(
+    'meta[data-hid="og:image"][property="og:image"]',
+  );
+  if (coverElement != null) {
+    String? cover = coverElement.attributes['content'];
+    if (cover != null && cover.isNotEmpty) {
+      result.add(DynamicPicture.unknown(cover));
+    }
+  }
+
+  ///文章内容区域
+  var contentElement = document.querySelector('div[id="article-content"]');
+  if (contentElement != null) {
+    result.addAll(
+      contentElement
+          .querySelectorAll('figure[class="img-box"] > img')
+          .map<DynamicPicture>((e) {
+        String? url = e.attributes['data-src'];
+        //图片字节数
+        double size = 0;
+        int? bytes = int.tryParse(e.attributes['data-size'] ?? '');
+        if (bytes != null) {
+          size = bytes / 1024;
+        }
+        return DynamicPicture(
+          url: url != null ? 'https:$url' : '',
+          width: int.tryParse(e.attributes['width'] ?? '0') ?? 0,
+          height: int.tryParse(e.attributes['height'] ?? '0') ?? 0,
+          size: size,
+        );
+      }),
+    );
+  }
+  return result;
 }

@@ -2,8 +2,10 @@
 enum DynamicContentType {
   //图片动态
   MAJOR_TYPE_DRAW,
-  //投稿
+  //投稿视频
   MAJOR_TYPE_ARCHIVE,
+  //投稿文章
+  MAJOR_TYPE_ARTICLE,
   //未知类型
   UNKNOWN,
 }

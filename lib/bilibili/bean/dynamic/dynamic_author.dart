@@ -1,15 +1,17 @@
+import 'dart:convert';
+
 import 'package:april/utils/json.dart';
 
 ///动态作者
 class DynamicAuthor {
   const DynamicAuthor({
-    required this.authorId,
+    required this.id,
     required this.nickName,
     required this.avatar,
   });
 
   ///作者 id
-  final int authorId;
+  final int id;
 
   ///作者 昵称
   final String nickName;
@@ -20,9 +22,18 @@ class DynamicAuthor {
   factory DynamicAuthor.fromJson(Map map) {
     var json = Json(map);
     return DynamicAuthor(
-      authorId: json.getInt('mid'),
+      id: json.getInt('mid'),
       nickName: json.getString('name'),
       avatar: json.getString('face'),
     );
   }
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'nickName': nickName,
+        'avatar': avatar,
+      };
+
+  @override
+  String toString() => jsonEncode(toMap());
 }

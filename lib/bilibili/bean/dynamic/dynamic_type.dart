@@ -2,6 +2,8 @@
 enum DynamicType {
   //图片
   DYNAMIC_TYPE_DRAW,
+  //文章
+  DYNAMIC_TYPE_ARTICLE,
   //视频
   DYNAMIC_TYPE_AV,
   //转发
