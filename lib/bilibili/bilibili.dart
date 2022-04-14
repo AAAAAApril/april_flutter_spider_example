@@ -1,3 +1,6 @@
+import 'package:april/utils/json.dart';
+import 'package:april_spider/bilibili/bean/dynamic/dynamic.dart';
+import 'package:april_spider/bilibili/pagination/bili_data_wrapper.dart';
 import 'package:april_spider/configs.dart';
 import 'package:april_spider/extensions.dart';
 import 'package:april_spider/log.dart';
@@ -20,14 +23,15 @@ class BiliBili {
 
   ///我关注的人的动态
   ///https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all?timezone_offset=-480&type=all&offset=648556400009543680&page=2
-  static Future<void> followersDynamics({
+  static Future<BiliPaginationDataWrapper<DynamicBean>> followersDynamics({
     //页码
     required int pageNum,
     //刷新操作时不传此参数
     String? nextPageOffset,
     RequestConfiguration? configuration,
   }) {
-    return compute<_FollowersDynamicsConfig, void>(
+    return compute<_FollowersDynamicsConfig,
+        BiliPaginationDataWrapper<DynamicBean>>(
       _followersDynamics,
       _FollowersDynamicsConfig(
         pageNum: pageNum,
@@ -50,7 +54,9 @@ class _FollowersDynamicsConfig {
   final RequestConfiguration configuration;
 }
 
-Future<void> _followersDynamics(_FollowersDynamicsConfig config) async {
+Future<BiliPaginationDataWrapper<DynamicBean>> _followersDynamics(
+  _FollowersDynamicsConfig config,
+) async {
   var queryParameters = <String, String>{
     'page': config.pageNum.toString(),
     'timezone_offset': '-480',
@@ -70,7 +76,22 @@ Future<void> _followersDynamics(_FollowersDynamicsConfig config) async {
   Log.print(tag: '关注的人的所有动态接口结果', value: () => result);
   //失败
   if (result == null) {
-    //
+    return BiliPaginationDataWrapper<DynamicBean>.failed();
   }
   //成功
+  try {
+    var json = Json(result);
+    if (!json.getBool('code', trueInt: 0)) {
+      return BiliPaginationDataWrapper<DynamicBean>.failed();
+    }
+    return BiliPaginationDataWrapper.succeed(
+      data: json.getList<DynamicBean>('items', decoder: DynamicBean.fromJson),
+      paginationBean: BiliPaginationBean(
+        hasMore: json.getBool('has_more'),
+        nextPageOffset: json.getString('offset'),
+      ),
+    );
+  } catch (_) {
+    return BiliPaginationDataWrapper<DynamicBean>.failed();
+  }
 }
