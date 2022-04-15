@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:april_spider/novel/bqg99/bean/chapter.dart';
 
 ///搜索结果
@@ -28,4 +30,16 @@ class SearchResultBean {
 
   ///最后更新的章节
   final ChapterBean latestUpdateChapter;
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+        'cover': cover,
+        'author': author,
+        'category': category,
+        'latestUpdateChapter': latestUpdateChapter.toMap(),
+      };
+
+  @override
+  String toString() => jsonEncode(toMap());
 }

@@ -1,5 +1,6 @@
 import 'package:april_spider/bilibili/bilibili.dart';
 import 'package:april_spider/log.dart';
+import 'package:april_spider/novel/bqg99/bqg.dart';
 import 'package:april_spider/novel/ouoou/bean/chapter.dart';
 import 'package:april_spider/novel/ouoou/ouoou.dart';
 import 'package:flutter/material.dart';
@@ -96,6 +97,47 @@ class _MyHomePageState extends State<MyHomePage> {
                   tag: '动态：${element.id}',
                   value: () => element.toMap(),
                 );
+              }
+            });
+          },
+        ),
+        ElevatedButton(
+          child: const Text('笔趣阁搜索《黎明之剑》'),
+          onPressed: () {
+            Bqg99.searchNovel('黎明之剑').then((value) {
+              Log.print(tag: '《黎明之剑》搜索结果');
+              for (var element in value) {
+                Log.print(value: () => element.toMap());
+              }
+            });
+          },
+        ),
+        ElevatedButton(
+          child: const Text('笔趣阁查询《黎明之剑》详情'),
+          onPressed: () {
+            Bqg99.novelDetail('1944105').then((value) {
+              if (value == null) {
+                Log.print(tag: '获取《黎明之剑》详情失败');
+                return;
+              }
+              //
+            });
+          },
+        ),
+        ElevatedButton(
+          child: const Text('笔趣阁获取《黎明之剑》章节《完本感言》详情'),
+          onPressed: () {
+            Bqg99.chapterDetail(
+              novelId: '1944105',
+              chapterId: '308697942',
+            ).then((value) {
+              if (value == null) {
+                Log.print(tag: '获取章节详情失败');
+                return;
+              }
+              Log.print(tag: '章节详情', value: () => value.toMap());
+              for (var element in value.paragraphs) {
+                Log.print(value: () => element);
               }
             });
           },

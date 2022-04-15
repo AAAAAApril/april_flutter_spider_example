@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:april_spider/novel/bqg99/bean/chapter.dart';
 
 ///小说详情
@@ -48,4 +50,21 @@ class NovelBean {
 
   ///目前所有的章节
   final List<ChapterBean> allChapters;
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+        'cover': cover,
+        'author': author,
+        'totalWordsCount': totalWordsCount,
+        'category': category,
+        'status': status,
+        'introduction': introduction,
+        'latestUpdateTime': latestUpdateTime.toString(),
+        'latestUpdateChapter': latestUpdateChapter.toMap(),
+        'allChaptersLength': allChapters.length,
+      };
+
+  @override
+  String toString() => jsonEncode(toMap());
 }
