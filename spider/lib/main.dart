@@ -102,6 +102,12 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         ),
         ElevatedButton(
+          child: const Text('BiliBili检查是否有新动态'),
+          onPressed: () {
+            BiliBili.checkUpdate(lastDynamicId: '649740153103843337');
+          },
+        ),
+        ElevatedButton(
           child: const Text('笔趣阁搜索《黎明之剑》'),
           onPressed: () {
             Bqg99.searchNovel('黎明之剑').then((value) {

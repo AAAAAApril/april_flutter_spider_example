@@ -5,6 +5,7 @@ import 'package:april_spider/bilibili/bean/dynamic/dynamic_type.dart';
 import 'package:april_spider/bilibili/pagination/bili_data_wrapper.dart';
 import 'package:april_spider/configs.dart';
 import 'package:april_spider/extensions.dart';
+import 'package:april_spider/log.dart';
 import 'package:april_spider/network.dart';
 import 'package:flutter/foundation.dart';
 
@@ -57,6 +58,36 @@ class BiliBili {
         configuration: webRequestConfiguration.merge(configuration),
       ),
     );
+  }
+
+  /// 查询是否有新动态
+  ///https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all/update?type=all&update_baseline=649755597811482675
+  static Future<bool> checkUpdate({
+    //现存的最新的动态 id
+    required String lastDynamicId,
+    RequestConfiguration? configuration,
+  }) async {
+    var json = await Network.getJson(
+      uri: Uri.https(
+        'api.bilibili.com',
+        'x/polymer/web-dynamic/v1/feed/all/update',
+        <String, String>{
+          'type': 'all',
+          'update_baseline': lastDynamicId,
+        },
+      ),
+      configuration: webRequestConfiguration.merge(configuration),
+    );
+    if (json == null) {
+      return false;
+    }
+    int code = json['code'];
+    if (code != 0) {
+      return false;
+    }
+    int newDynamicCount = json['data']['update_num'];
+    Log.print(tag: '新动态数量：$newDynamicCount');
+    return newDynamicCount > 0;
   }
 }
 
