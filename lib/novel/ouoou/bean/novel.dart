@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:april_spider/novel/ouoou/bean/chapter.dart';
+import 'package:spider/novel/ouoou/bean/chapter.dart';
 
 ///小说信息（简略）
 class NovelBean {

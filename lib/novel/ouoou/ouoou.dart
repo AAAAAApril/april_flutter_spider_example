@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:april_spider/configs.dart';
-import 'package:april_spider/extensions.dart';
-import 'package:april_spider/log.dart';
-import 'package:april_spider/network.dart';
-import 'package:april_spider/novel/ouoou/bean/chapter.dart';
-import 'package:april_spider/novel/ouoou/bean/novel.dart';
-import 'package:april_spider/novel/ouoou/bean/search.dart';
+import 'package:spider/configs.dart';
+import 'package:spider/extensions.dart';
+import 'package:spider/log.dart';
+import 'package:spider/network.dart';
+import 'package:spider/novel/ouoou/bean/chapter.dart';
+import 'package:spider/novel/ouoou/bean/novel.dart';
+import 'package:spider/novel/ouoou/bean/search.dart';
 import 'package:flutter/foundation.dart';
 
 import 'bean/classify.dart';

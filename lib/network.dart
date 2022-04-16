@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:april_spider/configs.dart';
+import 'package:spider/configs.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 

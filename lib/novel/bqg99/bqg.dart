@@ -1,10 +1,10 @@
 import 'package:april/utils/extensions.dart';
-import 'package:april_spider/configs.dart';
-import 'package:april_spider/extensions.dart';
-import 'package:april_spider/network.dart';
-import 'package:april_spider/novel/bqg99/bean/chapter.dart';
-import 'package:april_spider/novel/bqg99/bean/novel.dart';
-import 'package:april_spider/novel/bqg99/bean/search.dart';
+import 'package:spider/configs.dart';
+import 'package:spider/extensions.dart';
+import 'package:spider/network.dart';
+import 'package:spider/novel/bqg99/bean/chapter.dart';
+import 'package:spider/novel/bqg99/bean/novel.dart';
+import 'package:spider/novel/bqg99/bean/search.dart';
 import 'package:flutter/foundation.dart';
 
 /// 笔趣阁

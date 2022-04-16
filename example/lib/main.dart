@@ -1,8 +1,8 @@
-import 'package:april_spider/bilibili/bilibili.dart';
-import 'package:april_spider/log.dart';
-import 'package:april_spider/novel/bqg99/bqg.dart';
-import 'package:april_spider/novel/ouoou/bean/chapter.dart';
-import 'package:april_spider/novel/ouoou/ouoou.dart';
+import 'package:spider/bilibili/bilibili.dart';
+import 'package:spider/log.dart';
+import 'package:spider/novel/bqg99/bqg.dart';
+import 'package:spider/novel/ouoou/bean/chapter.dart';
+import 'package:spider/novel/ouoou/ouoou.dart';
 import 'package:flutter/material.dart';
 
 void main() {

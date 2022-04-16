@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:april_spider/novel/bqg99/bean/chapter.dart';
+import 'package:spider/novel/bqg99/bean/chapter.dart';
 
 ///搜索结果
 class SearchResultBean {

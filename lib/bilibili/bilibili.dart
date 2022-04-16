@@ -1,12 +1,12 @@
 import 'package:april/utils/json.dart';
-import 'package:april_spider/bilibili/bean/dynamic/dynamic.dart';
-import 'package:april_spider/bilibili/bean/dynamic/dynamic_content.dart';
-import 'package:april_spider/bilibili/bean/dynamic/dynamic_type.dart';
-import 'package:april_spider/bilibili/pagination/bili_data_wrapper.dart';
-import 'package:april_spider/configs.dart';
-import 'package:april_spider/extensions.dart';
-import 'package:april_spider/log.dart';
-import 'package:april_spider/network.dart';
+import 'package:spider/bilibili/bean/dynamic/dynamic.dart';
+import 'package:spider/bilibili/bean/dynamic/dynamic_content.dart';
+import 'package:spider/bilibili/bean/dynamic/dynamic_type.dart';
+import 'package:spider/bilibili/pagination/bili_data_wrapper.dart';
+import 'package:spider/configs.dart';
+import 'package:spider/extensions.dart';
+import 'package:spider/log.dart';
+import 'package:spider/network.dart';
 import 'package:flutter/foundation.dart';
 
 ///BiliBili 弹幕网
