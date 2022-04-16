@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Log.print(tag: '获取《黎明之剑》详情失败');
                 return;
               }
-              //
+              Log.print(tag: '《黎明之剑》详情', value: () => value.toMap());
             });
           },
         ),

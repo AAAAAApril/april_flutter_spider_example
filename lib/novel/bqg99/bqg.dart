@@ -163,8 +163,74 @@ Future<NovelBean?> _novelDetail(_NovelDetailRequestConfig config) async {
   if (infoElement == null) {
     return null;
   }
-  //TODO
-  return null;
+  var spans = infoElement.nonnullChildrenElement(
+    'div[class="small"]',
+    childrenSelector: 'span',
+  );
+  var spanTexts = spans.map((e) => e.text.trim()).toList();
+  ChapterBean lastChapter;
+  try {
+    var lastChapterElement = infoElement
+        .querySelector('div[class="small"] > span[class="last"] > a')!;
+    lastChapter = ChapterBean(
+      id: lastChapterElement.attributes['href']!
+          .split('/')
+          .last
+          .replaceAll('.html', ''),
+      name: lastChapterElement.text,
+    );
+  } catch (_) {
+    lastChapter = const ChapterBean(id: '', name: '');
+  }
+  return NovelBean(
+    id: config.novelId,
+    name: infoElement.nonnullElementText('h1'),
+    cover: infoElement.nonnullElementAttributeValue(
+      'div[class="cover"] > img',
+      attributeKey: 'src',
+    ),
+    author: spanTexts
+            .findFirst((element) => element.startsWith('作者：'))
+            ?.replaceFirst('作者：', '') ??
+        '',
+    totalWordsCount: int.tryParse(spanTexts
+                .findFirst((element) => element.startsWith('字数：'))
+                ?.replaceFirst('字数：', '') ??
+            '') ??
+        0,
+    category: spanTexts
+            .findFirst((element) => element.startsWith('分类：'))
+            ?.replaceFirst('分类：', '') ??
+        '',
+    status: spanTexts
+            .findFirst((element) => element.startsWith('状态：'))
+            ?.replaceFirst('状态：', '') ??
+        '',
+    introduction: infoElement
+        .nonnullElementText('div[class="intro"]')
+        .replaceFirst('简介：', '')
+        .trim(),
+    latestUpdateTime: DateTime.tryParse(spanTexts
+                .findFirst((element) => element.startsWith('更新时间：'))
+                ?.replaceFirst('更新时间：', '') ??
+            '') ??
+        DateTime.fromMillisecondsSinceEpoch(0),
+    latestUpdateChapter: lastChapter,
+    allChapters: document
+            .querySelector('div[class="listmain"] > dl')
+            ?.querySelectorAll('dd > a')
+            .map<ChapterBean>(
+              (e) => ChapterBean(
+                id: e.attributes['href']!
+                    .split('/')
+                    .last
+                    .replaceAll('.html', ''),
+                name: e.text.trim(),
+              ),
+            )
+            .toList() ??
+        <ChapterBean>[],
+  );
 }
 
 class _ChapterDetailRequestConfig {
