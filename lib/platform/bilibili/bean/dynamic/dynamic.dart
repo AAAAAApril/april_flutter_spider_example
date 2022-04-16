@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:april/utils/json.dart';
-import 'package:spider/bilibili/bean/dynamic/dynamic_author.dart';
-import 'package:spider/bilibili/bean/dynamic/dynamic_content.dart';
+import 'package:spider/platform/bilibili/bean/dynamic/dynamic_author.dart';
+import 'package:spider/platform/bilibili/bean/dynamic/dynamic_content.dart';
 
 import 'dynamic_type.dart';
 
