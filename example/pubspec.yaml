@@ -30,9 +30,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # https://pub.flutter-io.cn/packages/dart_vlc
-  dart_vlc: ^0.1.9
-
   spider:
     path: ../
 
