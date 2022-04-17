@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:spider/configs.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:spider/configs.dart';
 
 ///网络请求工具类
 class Network {
@@ -15,14 +16,15 @@ class Network {
     required Uri uri,
     required RequestConfiguration configuration,
   }) async {
-    var request = await HttpClient().getUrl(uri);
-    configuration.withRequest(request);
-    var response = await request.close();
-    if (response.statusCode != HttpStatus.ok) {
+    Response response = await http.get(
+      uri,
+      headers: configuration.toHeaderMap(),
+    );
+    if (response.statusCode != 200) {
       return null;
     }
     try {
-      return await response.transform(utf8.decoder).join();
+      return utf8.decode(response.bodyBytes);
     } catch (_) {
       return null;
     }
@@ -57,6 +59,50 @@ class Network {
     }
     try {
       return parse(response);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  ///Post 请求 String
+  ///null 表示获取失败
+  static Future<String?> postString({
+    required Uri uri,
+    required RequestConfiguration configuration,
+    Map<String, String>? body,
+  }) async {
+    Response response = await http.post(
+      uri,
+      headers: configuration.toHeaderMap(),
+      body: body,
+    );
+    if (response.statusCode != 200) {
+      return null;
+    }
+    try {
+      return utf8.decode(response.bodyBytes);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  ///Post 请求 json
+  ///null 表示获取失败
+  static Future<Map<String, dynamic>?> postJson({
+    required Uri uri,
+    required RequestConfiguration configuration,
+    Map<String, String>? body,
+  }) async {
+    String? response = await postString(
+      uri: uri,
+      configuration: configuration,
+      body: body,
+    );
+    if (response == null) {
+      return null;
+    }
+    try {
+      return Map<String, dynamic>.from(jsonDecode(response) as Map);
     } catch (_) {
       return null;
     }

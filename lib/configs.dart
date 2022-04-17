@@ -1,5 +1,3 @@
-import 'dart:io';
-
 ///请求配置
 class RequestConfiguration {
   const RequestConfiguration({
@@ -20,12 +18,14 @@ class RequestConfiguration {
     );
   }
 
-  void withRequest(HttpClientRequest request) {
+  Map<String, String> toHeaderMap() {
+    var result = <String, String>{};
     if (cookie != null) {
-      request.headers.set('cookie', cookie!);
+      result['cookie'] = cookie!;
     }
     if (userAgent != null) {
-      request.headers.set('user-agent', userAgent!);
+      result['user-agent'] = userAgent!;
     }
+    return result;
   }
 }

@@ -12,6 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # 地址：https://pub.flutter-io.cn/packages/http
+  http: ^0.13.4
+
   # 地址：https://pub.flutter-io.cn/packages/html
   html: ^0.15.0
 
