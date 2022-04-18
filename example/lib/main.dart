@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:spider/comic/bilibili/bilibili.dart';
 import 'package:spider/log.dart';
 import 'package:spider/novel/bqg99/bqg.dart';
 import 'package:spider/novel/ouoou/bean/chapter.dart';
@@ -147,32 +146,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 for (var element in value.paragraphs) {
                   Log.print(value: () => element);
                 }
-              });
-            },
-          ),
-          ElevatedButton(
-            child: const Text('BiliBili漫画搜索 修炼成仙'),
-            onPressed: () {
-              BiliManGa.searchComic('修炼成仙').then((value) {
-                Log.print(tag: 'BiliBili漫画搜索结果');
-                for (var element in value) {
-                  Log.print(value: () => element.toMap());
-                }
-              });
-            },
-          ),
-          ElevatedButton(
-            child: const Text('BiliBili漫画查询《修炼成仙的我只想养成女徒弟》详情'),
-            onPressed: () {
-              BiliManGa.comicDetail(28427).then((value) {
-                if (value == null) {
-                  Log.print(tag: '《修炼成仙的我只想养成女徒弟》详情获取失败');
-                  return;
-                }
-                Log.print(
-                  tag: '《修炼成仙的我只想养成女徒弟》详情',
-                  value: () => value.toMap(),
-                );
               });
             },
           ),

@@ -6,9 +6,34 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:spider/configs.dart';
 
+import 'log.dart';
+
 ///网络请求工具类
 class Network {
   Network._();
+
+  ///GET 请求原始字符串
+  ///null 表示请求失败了
+  static Future<String?> getOriginString({
+    required Uri uri,
+    required RequestConfiguration configuration,
+  }) async {
+    Response response = await http.get(
+      uri,
+      headers: configuration.toHeaderMap(),
+    );
+    if (response.statusCode != 200) {
+      Log.print(
+        tag: 'GET请求错误响应',
+        value: () => {
+          'statusCode': response.statusCode,
+          'headers': response.headers,
+        },
+      );
+      return null;
+    }
+    return response.body;
+  }
 
   ///GET 请求字符串
   ///null 表示请求或者解析失败了
@@ -21,6 +46,13 @@ class Network {
       headers: configuration.toHeaderMap(),
     );
     if (response.statusCode != 200) {
+      Log.print(
+        tag: 'GET请求错误响应',
+        value: () => {
+          'statusCode': response.statusCode,
+          'headers': response.headers,
+        },
+      );
       return null;
     }
     try {
@@ -77,6 +109,13 @@ class Network {
       body: body,
     );
     if (response.statusCode != 200) {
+      Log.print(
+        tag: 'POST请求错误响应',
+        value: () => {
+          'statusCode': response.statusCode,
+          'headers': response.headers,
+        },
+      );
       return null;
     }
     try {
