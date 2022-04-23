@@ -1,0 +1,43 @@
+name: Release App
+
+# 工作流程触发的时机，这里是当一个版本标签推送到仓库时触发
+# Tag格式: release-分支名字-版本号     -> release-AAAAA-1.0.0
+on:
+  push:
+    tags:
+      - "release-*"
+
+# 这个工作流程需要执行的任务
+jobs:
+  release-to-gitHub:
+    name: release
+    runs-on: ubuntu-latest
+    # 这个任务的步骤
+    steps:
+      # 拉取项目代码
+      - uses: actions/checkout@v1
+      # 建立 java 环境
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+      # 建立 Flutter 环境
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.10.5'
+          channel: "stable"
+      # 下载项目依赖
+      - run: flutter pub get
+
+      # 打包 APK
+      # 相关链接: https://flutter.dev/docs/deployment/android
+      # 输出文件路径: [project]/build/app/outputs/apk/release/app-release.apk  命令默认为--release
+      - run: flutter build apk --obfuscate --split-per-abi
+
+      # 发布到 Release
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: |
+#            build/app/outputs/bundle/release/*.aab
+            build/app/outputs/apk/release/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
