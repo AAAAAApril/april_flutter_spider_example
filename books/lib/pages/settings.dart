@@ -30,8 +30,6 @@ class SettingsPage extends StatelessWidget {
             onChanged: (value) {
               if (value == true) {
                 settingViewModel.changeGlobalFontFamily(e);
-              } else {
-                settingViewModel.changeGlobalFontFamily(FontFamilyName.none);
               }
             },
             title: Text(
