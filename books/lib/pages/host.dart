@@ -72,8 +72,6 @@ class _HostPageState extends State<HostPage> {
         valueListenable: selected,
         builder: (_, index, __) => BottomNavigationBar(
           currentIndex: index,
-          landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
-          type: BottomNavigationBarType.fixed,
           items: configs
               .map<BottomNavigationBarItem>(
                 (e) => BottomNavigationBarItem(
@@ -84,6 +82,7 @@ class _HostPageState extends State<HostPage> {
               .toList(),
           onTap: (index) {
             selected.value = index;
+            controller.jumpToPage(index);
           },
         ),
       ),

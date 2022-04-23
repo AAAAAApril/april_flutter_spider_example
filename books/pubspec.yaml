@@ -38,6 +38,8 @@ dependencies:
   provider: ^6.0.2
   # 地址：https://pub.flutter-io.cn/packages/package_info_plus
   package_info_plus: ^1.4.2
+  # 地址：https://pub.flutter-io.cn/packages/shared_preferences
+  shared_preferences: ^2.0.13
 
   spider:
     path: ../
@@ -98,23 +100,23 @@ flutter:
 
   fonts:
     # 华文楷体
-    - family: HWKaiTi
+    - family: hwKaiTi
       fonts:
         - asset: fonts/HWKaiTi-Regular.ttf
     # 华文行楷
-    - family: HWXingKai
+    - family: hwXingKai
       fonts:
         - asset: fonts/HWXingKai-Regular.ttf
     # 华文新魏
-    - family: HWXinWei
+    - family: hwXinWei
       fonts:
         - asset: fonts/HWXinWei-Regular.ttf
     # 楷体
-    - family: KaiTi
+    - family: kaiTi
       fonts:
         - asset: fonts/KaiTi-Regular.ttf
     # 隶书
-    - family: LiShu
+    - family: liShu
       fonts:
         - asset: fonts/LiShu-Regular.ttf
 

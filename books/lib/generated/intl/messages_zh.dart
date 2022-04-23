@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("zh"),
         "bookShelf": MessageLookupByLibrary.simpleMessage("书架"),
+        "globalFontFamily": MessageLookupByLibrary.simpleMessage("全局字体"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "settings": MessageLookupByLibrary.simpleMessage("设置")
       };

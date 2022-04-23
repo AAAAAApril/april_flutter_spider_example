@@ -2,5 +2,6 @@
   "_locale": "zh",
   "bookShelf": "书架",
   "search": "搜索",
-  "settings": "设置"
+  "settings": "设置",
+  "globalFontFamily": "全局字体"
 }

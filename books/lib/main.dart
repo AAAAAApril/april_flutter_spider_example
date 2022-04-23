@@ -1,7 +1,6 @@
 import 'package:april/april.dart';
 import 'package:april/utils/utils.dart';
 import 'package:books/pages/host.dart';
-import 'package:books/viewmodel/settings/fonts_mixin.dart';
 import 'package:books/viewmodel/settings/settings_viewmodel.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import 'generated/l10n.dart';
+import 'viewmodel/settings/font_family_name.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,7 +60,13 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           useMaterial3: true,
           primarySwatch: Colors.grey,
-          fontFamily: globalFontFamily.value,
+          fontFamily: globalFontFamily.name,
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Colors.grey.shade900,
+            unselectedItemColor: Colors.grey.shade400,
+          ),
         ),
         supportedLocales: Strings.delegate.supportedLocales,
         localizationsDelegates: const [

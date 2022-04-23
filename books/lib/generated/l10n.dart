@@ -89,6 +89,16 @@ class Strings {
       args: [],
     );
   }
+
+  /// `全局字体`
+  String get globalFontFamily {
+    return Intl.message(
+      '全局字体',
+      name: 'globalFontFamily',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<Strings> {
