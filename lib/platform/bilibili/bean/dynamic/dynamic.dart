@@ -37,7 +37,8 @@ class DynamicBean {
 
   factory DynamicBean.fromJson(Map map) {
     var json = Json(map);
-    var type = DynamicType.values.byName(json.getString('type'));
+    var type =
+        DynamicType.values.byNameWithoutException(json.getString('type'));
     var modulesJson = Json(json.get('modules') as Map);
     var moduleDynamicJson = Json((modulesJson.get('module_dynamic') as Map));
     DynamicContent? content;
@@ -64,6 +65,7 @@ class DynamicBean {
         break;
       case DynamicType.DYNAMIC_TYPE_WORD:
         break;
+      case DynamicType.DYNAMIC_TYPE_NONE:
       case DynamicType.UNKNOWN:
         break;
     }

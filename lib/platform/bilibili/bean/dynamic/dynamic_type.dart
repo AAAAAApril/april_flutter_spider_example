@@ -10,14 +10,16 @@ enum DynamicType {
   DYNAMIC_TYPE_FORWARD,
   //纯文本
   DYNAMIC_TYPE_WORD,
+  //动态无数据
+  DYNAMIC_TYPE_NONE,
   //未知类型
   UNKNOWN,
 }
 
 extension DynamicTypeListExt on List<DynamicType> {
-  DynamicType byName(String name) {
+  DynamicType byNameWithoutException(String name) {
     try {
-      return firstWhere((element) => element.name == name);
+      return byName(name);
     } catch (_) {
       return DynamicType.UNKNOWN;
     }

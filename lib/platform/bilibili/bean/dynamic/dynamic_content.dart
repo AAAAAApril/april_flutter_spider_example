@@ -27,7 +27,7 @@ class DynamicContent {
 
   factory DynamicContent.fromJson(Map map) {
     var json = Json(map);
-    DynamicContentType type = DynamicContentType.values.byName(
+    DynamicContentType type = DynamicContentType.values.byNameWithoutException(
       json.getString('type'),
     );
     var pictures = <DynamicPicture>[];
@@ -44,10 +44,11 @@ class DynamicContent {
       case DynamicContentType.MAJOR_TYPE_ARCHIVE:
         video = DynamicVideo.fromJson(json.get('archive') as Map);
         break;
-      case DynamicContentType.UNKNOWN:
-        break;
       case DynamicContentType.MAJOR_TYPE_ARTICLE:
         article = DynamicArticle.fromJson(json.get('article') as Map);
+        break;
+      case DynamicContentType.MAJOR_TYPE_NONE:
+      case DynamicContentType.UNKNOWN:
         break;
     }
     return DynamicContent(

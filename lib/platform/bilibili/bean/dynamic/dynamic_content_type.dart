@@ -6,16 +6,16 @@ enum DynamicContentType {
   MAJOR_TYPE_ARCHIVE,
   //投稿文章
   MAJOR_TYPE_ARTICLE,
+  //无内容
+  MAJOR_TYPE_NONE,
   //未知类型
   UNKNOWN,
 }
 
 extension DynamicContentTypeListExt on List<DynamicContentType> {
-  DynamicContentType byName(String name) {
+  DynamicContentType byNameWithoutException(String name) {
     try {
-      return DynamicContentType.values.firstWhere(
-        (element) => element.name == name,
-      );
+      return byName(name);
     } catch (_) {
       return DynamicContentType.UNKNOWN;
     }
