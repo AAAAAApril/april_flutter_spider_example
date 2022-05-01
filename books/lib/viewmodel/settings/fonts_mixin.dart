@@ -1,8 +1,8 @@
 import 'package:april/data/notifier_mixin.dart';
-import 'package:april/data/selector_listenable.dart';
 import 'package:books/viewmodel/settings/global_configs.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'font_family_name.dart';
@@ -13,19 +13,7 @@ mixin FontFamiliesMixin on ViewModel {
   late final ValueNotifier<GlobalConfigs> _globalConfigs =
       ValueNotifier<GlobalConfigs>(GlobalConfigs.def)..withMixin(this);
 
-  ///全局字体样式
-  late final ValueListenable<FontFamilyName> globalFontFamilies =
-      SelectValueNotifier<GlobalConfigs, FontFamilyName>(
-    valueListenable: _globalConfigs,
-    selector: (value) => value.globalFontFamily,
-  )..withMixin(this);
-
-  ///阅读界面字体样式
-  late final ValueListenable<FontFamilyName> readFontFamilies =
-      SelectValueNotifier<GlobalConfigs, FontFamilyName>(
-    valueListenable: _globalConfigs,
-    selector: (value) => value.readFontFamily,
-  )..withMixin(this);
+  ValueListenable<GlobalConfigs> get globalConfigs => _globalConfigs;
 
   ///初始化
   void onInitFontFamiliesMixin() async {
@@ -36,12 +24,24 @@ mixin FontFamiliesMixin on ViewModel {
     );
   }
 
+  ///修改全局主题模式
+  void changeGlobalThemeMode(ThemeMode mode) {
+    _globalConfigs.value = _globalConfigs.value.copy(
+      themeMode: mode,
+    );
+    _notifyCache();
+  }
+
   ///修改全局字体样式
   void changeGlobalFontFamily(FontFamilyName name) {
     _globalConfigs.value = _globalConfigs.value.copy(
       globalFontFamily: name,
     );
-    //更新缓存
+    _notifyCache();
+  }
+
+  ///更新缓存
+  void _notifyCache() {
     SharedPreferences.getInstance().then<void>((value) {
       value.setString(
         GlobalConfigs.cacheKey,

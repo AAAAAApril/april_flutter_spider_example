@@ -23,7 +23,7 @@ extension FontFamilyNameExt on FontFamilyName {
   String get fontName {
     switch (this) {
       case FontFamilyName.none:
-        return '无';
+        return '默认';
       case FontFamilyName.hwKaiTi:
         return '华文楷体';
       case FontFamilyName.hwXingKai:

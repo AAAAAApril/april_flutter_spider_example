@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:april/utils/json.dart';
 import 'package:books/viewmodel/settings/font_family_name.dart';
+import 'package:flutter/material.dart';
 
 ///全局配置
 class GlobalConfigs {
@@ -16,12 +17,14 @@ class GlobalConfigs {
     readFontSize: 20,
     globalFontFamily: FontFamilyName.none,
     readFontFamily: FontFamilyName.none,
+    themeMode: ThemeMode.system,
   );
 
   const GlobalConfigs._({
     required this.readFontSize,
     required this.globalFontFamily,
     required this.readFontFamily,
+    required this.themeMode,
   });
 
   ///阅读页文字大小
@@ -32,6 +35,9 @@ class GlobalConfigs {
 
   ///阅读页字体样式
   final FontFamilyName readFontFamily;
+
+  ///界面主题样式
+  final ThemeMode themeMode;
 
   factory GlobalConfigs.fromJson(String? jsonString) {
     if (jsonString == null) {
@@ -58,6 +64,12 @@ class GlobalConfigs {
           def.readFontFamily.name,
         ),
       ),
+      themeMode: ThemeMode.values.byName(
+        json.getString(
+          'themeMode',
+          def.themeMode.name,
+        ),
+      ),
     );
   }
 
@@ -65,11 +77,13 @@ class GlobalConfigs {
     int? readFontSize,
     FontFamilyName? globalFontFamily,
     FontFamilyName? readFontFamily,
+    ThemeMode? themeMode,
   }) {
     return GlobalConfigs._(
       readFontSize: readFontSize ?? this.readFontSize,
       globalFontFamily: globalFontFamily ?? this.globalFontFamily,
       readFontFamily: readFontFamily ?? this.readFontFamily,
+      themeMode: themeMode ?? this.themeMode,
     );
   }
 
@@ -77,6 +91,7 @@ class GlobalConfigs {
         'readFontSize': readFontSize,
         'globalFontFamily': globalFontFamily.name,
         'readFontFamily': readFontFamily.name,
+        'themeMode': themeMode.name,
       };
 
   @override

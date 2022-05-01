@@ -90,11 +90,71 @@ class Strings {
     );
   }
 
+  /// `全局主题`
+  String get globalThemeMode {
+    return Intl.message(
+      '全局主题',
+      name: 'globalThemeMode',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `全局字体`
   String get globalFontFamily {
     return Intl.message(
       '全局字体',
       name: 'globalFontFamily',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `搜索小说、作者（最好输入完整名称）`
+  String get searchHint {
+    return Intl.message(
+      '搜索小说、作者（最好输入完整名称）',
+      name: 'searchHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `作者：{value}`
+  String author(Object value) {
+    return Intl.message(
+      '作者：$value',
+      name: 'author',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `分类：{value}`
+  String category(Object value) {
+    return Intl.message(
+      '分类：$value',
+      name: 'category',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `状态：`
+  String get status {
+    return Intl.message(
+      '状态：',
+      name: 'status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `最新章节：`
+  String get latestChapter {
+    return Intl.message(
+      '最新章节：',
+      name: 'latestChapter',
       desc: '',
       args: [],
     );

@@ -3,5 +3,11 @@
   "bookShelf": "书架",
   "search": "搜索",
   "settings": "设置",
-  "globalFontFamily": "全局字体"
+  "globalThemeMode": "全局主题",
+  "globalFontFamily": "全局字体",
+  "searchHint": "搜索小说、作者（最好输入完整名称）",
+  "author": "作者：{value}",
+  "category": "分类：{value}",
+  "status": "状态：",
+  "latestChapter": "最新章节："
 }

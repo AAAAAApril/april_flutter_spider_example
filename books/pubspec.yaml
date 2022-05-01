@@ -40,6 +40,8 @@ dependencies:
   package_info_plus: ^1.4.2
   # 地址：https://pub.flutter-io.cn/packages/shared_preferences
   shared_preferences: ^2.0.13
+  # 地址：https://pub.flutter-io.cn/packages/cached_network_image
+  cached_network_image: ^3.2.0
 
   spider:
     path: ../
