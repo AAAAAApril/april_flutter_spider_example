@@ -1,8 +1,8 @@
 import 'package:april/data/notifier_mixin.dart';
+import 'package:books/repository/repository.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:spider/novel/bqg99/bean/novel.dart';
-import 'package:spider/novel/bqg99/bqg.dart';
 
 ///书籍详情 ViewModel
 class BookDetailViewModel extends ViewModel {
@@ -32,6 +32,6 @@ class BookDetailViewModel extends ViewModel {
 
   ///刷新详情数据
   void _refresh() async {
-    _bookDetail.value = await Bqg99.novelDetail(bookId);
+    _bookDetail.value = await Repository.bookDetail(bookId);
   }
 }

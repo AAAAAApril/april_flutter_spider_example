@@ -1,9 +1,9 @@
 import 'package:april/data/notifier_mixin.dart';
+import 'package:books/repository/repository.dart';
 import 'package:books/viewmodel/settings/enums/network_type.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'enums/font_family_name.dart';
 import 'global_configs.dart';
@@ -11,11 +11,9 @@ import 'global_configs.dart';
 ///设置 ViewModel
 class SettingsViewModel extends ViewModel {
   SettingsViewModel() {
-    //从缓存中取出配置数据
-    SharedPreferences.getInstance().then<void>((sharedPreferences) {
-      _globalConfigs.value = GlobalConfigs.fromJson(
-        sharedPreferences.getString(GlobalConfigs.cacheKey),
-      );
+    //取出配置数据
+    Repository.getGlobalSettings().then<void>((value) {
+      _globalConfigs.value = value;
     });
   }
 
@@ -51,11 +49,6 @@ class SettingsViewModel extends ViewModel {
 
   ///更新缓存
   void _notifyCache() {
-    SharedPreferences.getInstance().then<void>((value) {
-      value.setString(
-        GlobalConfigs.cacheKey,
-        _globalConfigs.value.toString(),
-      );
-    });
+    Repository.setGlobalSettings(_globalConfigs.value);
   }
 }

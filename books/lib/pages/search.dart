@@ -61,9 +61,9 @@ class SearchPage extends StatelessWidget {
       ),
       Expanded(
         child: ValueListenableBuilder<bool>(
-          valueListenable: viewModel.searchController.isRefreshing,
+          valueListenable: viewModel.isRefreshing,
           child: ValueListenableBuilder<List<SearchResultBean>>(
-            valueListenable: viewModel.searchController.data,
+            valueListenable: viewModel.searchResult,
             builder: (_, value, __) => ListView.separated(
               itemCount: value.length,
               separatorBuilder: (_, __) => const Divider(),

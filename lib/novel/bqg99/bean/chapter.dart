@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:april/utils/json.dart';
+
 ///章节
 class ChapterBean {
   const ChapterBean({
@@ -33,10 +35,19 @@ class LatestChapterBean extends ChapterBean {
   ///更新时间
   final DateTime updateTime;
 
+  factory LatestChapterBean.fromMap(Map map) {
+    var json = Json(map);
+    return LatestChapterBean(
+      id: json.getString('id'),
+      name: json.getString('name'),
+      updateTime: DateTime.parse(json.getString('updateTime')),
+    );
+  }
+
   @override
   Map<String, dynamic> toMap() => super.toMap()
     ..addAll({
-      'updateTime': updateTime,
+      'updateTime': updateTime.toString(),
     });
 }
 
@@ -60,7 +71,6 @@ class ChapterDetailBean extends LatestChapterBean {
   Map<String, dynamic> toMap() => super.toMap()
     ..addAll({
       'wordsCount': wordsCount,
-      'updateTime': updateTime.toString(),
       'paragraphsLength': paragraphs.length,
     });
 }

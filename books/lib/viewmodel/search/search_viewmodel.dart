@@ -1,12 +1,11 @@
-import 'package:april/data/refreshable.dart';
-import 'package:april/data/refreshable_controller.dart';
-import 'package:april/data/refreshable_data_wrapper.dart';
 import 'package:april/utils/utils.dart';
+import 'package:books/repository/repository.dart';
 import 'package:books/viewmodel/viewmodel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:spider/log.dart';
 import 'package:spider/novel/bqg99/bean/search.dart';
-import 'package:spider/novel/bqg99/bqg.dart';
+
+import 'package:april/data/notifier_mixin.dart';
 
 ///搜索 ViewModel
 class SearchViewModel extends ViewModel {
@@ -14,14 +13,20 @@ class SearchViewModel extends ViewModel {
   final TextEditingController editingController = TextEditingController();
 
   ///搜索结果
-  final _SearchDataController _searchController = _SearchDataController();
+  late final ValueNotifier<List<SearchResultBean>> _searchResult =
+      ValueNotifier(<SearchResultBean>[])..withMixin(this);
 
-  Refreshable<SearchResultBean> get searchController => _searchController;
+  ValueListenable<List<SearchResultBean>> get searchResult => _searchResult;
+
+  ///是否正在刷新
+  late final ValueNotifier<bool> _isRefreshing = ValueNotifier(false)
+    ..withMixin(this);
+
+  ValueListenable<bool> get isRefreshing => _isRefreshing;
 
   @override
   void dispose() {
     editingController.dispose();
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -34,48 +39,18 @@ class SearchViewModel extends ViewModel {
   void doSearch() async {
     var keywords = editingController.text.trim();
     if (keywords.isEmpty) {
-      _searchController.clearData();
+      _searchResult.value = <SearchResultBean>[];
       return;
     }
-    Log.print(tag: '搜索关键词：$keywords');
-    _searchController._doSearch(keywords);
     //隐藏输入法，并清空焦点
     hideInputMethod();
     clearFocus();
+
+    _isRefreshing.value = true;
+    Repository.search(keywords).then<void>((value) {
+      _searchResult.value = value;
+    }).whenComplete(() {
+      _isRefreshing.value = false;
+    });
   }
-}
-
-class _SearchDataController
-    extends AbsRefreshableController<SearchResultBean, _SearchDataWrapper> {
-  String keywords = '';
-
-  void _doSearch(String keywords) {
-    this.keywords = keywords;
-    refresh();
-  }
-
-  @override
-  Future<void> refresh() async {
-    if (keywords.isEmpty) {
-      return;
-    }
-    return super.refresh();
-  }
-
-  @override
-  Future<_SearchDataWrapper> refreshInternal() {
-    return Bqg99.searchNovel(keywords).then(
-      (value) => _SearchDataWrapper(value),
-    );
-  }
-}
-
-class _SearchDataWrapper extends AbsRefreshableDataWrapper<SearchResultBean> {
-  _SearchDataWrapper(this.data);
-
-  @override
-  final List<SearchResultBean> data;
-
-  @override
-  bool get succeed => true;
 }
