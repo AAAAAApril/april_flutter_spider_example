@@ -55,6 +55,14 @@ class _SearchDataController
   }
 
   @override
+  Future<void> refresh() async {
+    if (keywords.isEmpty) {
+      return;
+    }
+    return super.refresh();
+  }
+
+  @override
   Future<_SearchDataWrapper> refreshInternal() {
     return Bqg99.searchNovel(keywords).then(
       (value) => _SearchDataWrapper(value),

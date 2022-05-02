@@ -13,7 +13,6 @@ class NovelBean {
     required this.category,
     required this.status,
     required this.introduction,
-    required this.latestUpdateTime,
     required this.latestUpdateChapter,
     required this.allChapters,
   });
@@ -42,11 +41,8 @@ class NovelBean {
   ///小说简介
   final String introduction;
 
-  ///最后更新时间
-  final DateTime latestUpdateTime;
-
   ///最后更新的章节
-  final ChapterBean latestUpdateChapter;
+  final LatestChapterBean latestUpdateChapter;
 
   ///目前所有的章节
   final List<ChapterBean> allChapters;
@@ -60,7 +56,6 @@ class NovelBean {
         'category': category,
         'status': status,
         'introduction': introduction,
-        'latestUpdateTime': latestUpdateTime.toString(),
         'latestUpdateChapter': latestUpdateChapter.toMap(),
         'allChaptersLength': allChapters.length,
       };

@@ -8,6 +8,11 @@
   "searchHint": "搜索小说、作者（最好输入完整名称）",
   "author": "作者：{value}",
   "category": "分类：{value}",
-  "status": "状态：",
-  "latestChapter": "最新章节："
+  "status": "状态：{value}",
+  "wordsCount": "字数：{value}",
+  "introduction": "简介",
+  "allChapters": "所有章节",
+  "latestChapter": "最新章节：",
+  "isReverseOrder": "是否倒序显示",
+  "allowedNetworkType": "允许使用的网络类型"
 }

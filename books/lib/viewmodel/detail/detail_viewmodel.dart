@@ -7,7 +7,7 @@ import 'package:spider/novel/bqg99/bqg.dart';
 ///书籍详情 ViewModel
 class BookDetailViewModel extends ViewModel {
   BookDetailViewModel(this.bookId) {
-    refresh();
+    _refresh();
   }
 
   ///书籍 id
@@ -19,8 +19,19 @@ class BookDetailViewModel extends ViewModel {
 
   ValueListenable<NovelBean?> get bookDetail => _bookDetail;
 
+  ///所有章节是否倒序显示
+  late final ValueNotifier<bool> _reverseOrder = ValueNotifier<bool>(true)
+    ..withMixin(this);
+
+  ValueListenable<bool> get reverseOrder => _reverseOrder;
+
+  ///切换是否倒序
+  void switchReverseOrder(bool reverseOrder) {
+    _reverseOrder.value = reverseOrder;
+  }
+
   ///刷新详情数据
-  void refresh() async {
+  void _refresh() async {
     _bookDetail.value = await Bqg99.novelDetail(bookId);
   }
 }

@@ -140,11 +140,41 @@ class Strings {
     );
   }
 
-  /// `状态：`
-  String get status {
+  /// `状态：{value}`
+  String status(Object value) {
     return Intl.message(
-      '状态：',
+      '状态：$value',
       name: 'status',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `字数：{value}`
+  String wordsCount(Object value) {
+    return Intl.message(
+      '字数：$value',
+      name: 'wordsCount',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `简介`
+  String get introduction {
+    return Intl.message(
+      '简介',
+      name: 'introduction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `所有章节`
+  String get allChapters {
+    return Intl.message(
+      '所有章节',
+      name: 'allChapters',
       desc: '',
       args: [],
     );
@@ -155,6 +185,26 @@ class Strings {
     return Intl.message(
       '最新章节：',
       name: 'latestChapter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `是否倒序显示`
+  String get isReverseOrder {
+    return Intl.message(
+      '是否倒序显示',
+      name: 'isReverseOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `允许使用的网络类型`
+  String get allowedNetworkType {
+    return Intl.message(
+      '允许使用的网络类型',
+      name: 'allowedNetworkType',
       desc: '',
       args: [],
     );

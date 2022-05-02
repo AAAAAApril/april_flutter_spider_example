@@ -1,11 +1,11 @@
 import 'package:april/utils/extensions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:spider/configs.dart';
 import 'package:spider/extensions.dart';
 import 'package:spider/network.dart';
 import 'package:spider/novel/bqg99/bean/chapter.dart';
 import 'package:spider/novel/bqg99/bean/novel.dart';
 import 'package:spider/novel/bqg99/bean/search.dart';
-import 'package:flutter/foundation.dart';
 
 /// 笔趣阁
 /// 网站：https://www.bqg99.cc/
@@ -77,6 +77,21 @@ class Bqg99 {
         configuration: webRequestConfiguration.merge(configuration),
       ),
     ).printRequestTime('笔趣阁获取章节详情');
+  }
+
+  ///获取小说的最新章节
+  ///https://m.bqg99.cc/book/1944105/
+  static Future<LatestChapterBean?> latestChapter(
+    String novelId, {
+    RequestConfiguration? configuration,
+  }) {
+    return compute<_LatestChapterRequestConfig, LatestChapterBean?>(
+      _latestChapter,
+      _LatestChapterRequestConfig(
+        novelId: novelId,
+        configuration: phoneRequestConfiguration.merge(configuration),
+      ),
+    ).printRequestTime('笔趣阁获取最新章节');
   }
 }
 
@@ -163,59 +178,64 @@ Future<NovelBean?> _novelDetail(_NovelDetailRequestConfig config) async {
   if (infoElement == null) {
     return null;
   }
-  var spans = infoElement.nonnullChildrenElement(
-    'div[class="small"]',
-    childrenSelector: 'span',
-  );
-  var spanTexts = spans.map((e) => e.text.trim()).toList();
-  ChapterBean lastChapter;
-  try {
-    var lastChapterElement = infoElement
-        .querySelector('div[class="small"] > span[class="last"] > a')!;
-    lastChapter = ChapterBean(
-      id: lastChapterElement.attributes['href']!
-          .split('/')
-          .last
-          .replaceAll('.html', ''),
-      name: lastChapterElement.text,
-    );
-  } catch (_) {
-    lastChapter = const ChapterBean(id: '', name: '');
-  }
   return NovelBean(
     id: config.novelId,
-    name: infoElement.nonnullElementText('h1'),
-    cover: infoElement.nonnullElementAttributeValue(
-      'div[class="cover"] > img',
-      attributeKey: 'src',
-    ),
-    author: spanTexts
-            .findFirst((element) => element.startsWith('作者：'))
-            ?.replaceFirst('作者：', '') ??
+    name: document
+            .querySelector('meta[property="og:title"]')
+            ?.attributes['content'] ??
         '',
-    totalWordsCount: int.tryParse(spanTexts
-                .findFirst((element) => element.startsWith('字数：'))
-                ?.replaceFirst('字数：', '') ??
-            '') ??
+    cover: document
+            .querySelector('meta[property="og:image"]')
+            ?.attributes['content'] ??
+        '',
+    author: document
+            .querySelector('meta[property="og:novel:author"]')
+            ?.attributes['content'] ??
+        '',
+    totalWordsCount: int.tryParse(
+          infoElement
+                  .nonnullChildrenElement(
+                    'div[class="small"]',
+                    childrenSelector: 'span',
+                  )
+                  .map((e) => e.text.trim())
+                  .toList()
+                  .findFirst((element) => element.startsWith('字数：'))
+                  ?.replaceFirst('字数：', '') ??
+              '',
+        ) ??
         0,
-    category: spanTexts
-            .findFirst((element) => element.startsWith('分类：'))
-            ?.replaceFirst('分类：', '') ??
+    category: document
+            .querySelector('meta[property="og:novel:category"]')
+            ?.attributes['content'] ??
         '',
-    status: spanTexts
-            .findFirst((element) => element.startsWith('状态：'))
-            ?.replaceFirst('状态：', '') ??
+    status: document
+            .querySelector('meta[property="og:novel:status"]')
+            ?.attributes['content'] ??
         '',
     introduction: infoElement
         .nonnullElementText('div[class="intro"]')
         .replaceFirst('简介：', '')
         .trim(),
-    latestUpdateTime: DateTime.tryParse(spanTexts
-                .findFirst((element) => element.startsWith('更新时间：'))
-                ?.replaceFirst('更新时间：', '') ??
-            '') ??
-        DateTime.fromMillisecondsSinceEpoch(0),
-    latestUpdateChapter: lastChapter,
+    latestUpdateChapter: LatestChapterBean(
+      id: (document
+                  .querySelector('meta[property="og:novel:latest_chapter_url"]')
+                  ?.attributes['content'] ??
+              '')
+          .split('/')
+          .last
+          .replaceAll('.html', ''),
+      name: document
+              .querySelector('meta[property="og:novel:latest_chapter_name"]')
+              ?.attributes['content'] ??
+          '',
+      updateTime: DateTime.parse(
+        document
+                .querySelector('meta[property="og:novel:update_time"]')
+                ?.attributes['content'] ??
+            '',
+      ),
+    ),
     allChapters: document
             .querySelector('div[class="listmain"] > dl')
             ?.querySelectorAll('dd > a')
@@ -293,5 +313,55 @@ Future<ChapterDetailBean?> _chapterDetail(
             ' ') ??
         DateTime.fromMillisecondsSinceEpoch(0),
     paragraphs: paragraphs,
+  );
+}
+
+class _LatestChapterRequestConfig {
+  const _LatestChapterRequestConfig({
+    required this.novelId,
+    required this.configuration,
+  });
+
+  final String novelId;
+  final RequestConfiguration configuration;
+}
+
+Future<LatestChapterBean?> _latestChapter(
+  _LatestChapterRequestConfig config,
+) async {
+  var document = await Network.getHtmlDocument(
+    uri: Uri.parse('https://m.bqg99.cc/book/${config.novelId}/'),
+    configuration: config.configuration,
+  );
+  if (document == null) {
+    return null;
+  }
+  var timeString = document
+      .querySelector(
+        'meta[property="og:novel:update_time"]',
+      )
+      ?.attributes['content'];
+  var nameString = document
+      .querySelector(
+        'meta[property="og:novel:latest_chapter_name"]',
+      )
+      ?.attributes['content'];
+  var urlString = document
+      .querySelector(
+        'meta[property="og:novel:latest_chapter_url"]',
+      )
+      ?.attributes['content'];
+  if (timeString == null ||
+      timeString.isEmpty ||
+      nameString == null ||
+      nameString.isEmpty ||
+      urlString == null ||
+      urlString.isEmpty) {
+    return null;
+  }
+  return LatestChapterBean(
+    id: urlString.split('/').last.replaceAll('.html', ''),
+    name: nameString,
+    updateTime: DateTime.parse(timeString),
   );
 }

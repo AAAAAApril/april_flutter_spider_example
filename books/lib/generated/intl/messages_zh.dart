@@ -24,18 +24,27 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(value) => "分类：${value}";
 
+  static String m2(value) => "状态：${value}";
+
+  static String m3(value) => "字数：${value}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("zh"),
+        "allChapters": MessageLookupByLibrary.simpleMessage("所有章节"),
+        "allowedNetworkType": MessageLookupByLibrary.simpleMessage("允许使用的网络类型"),
         "author": m0,
         "bookShelf": MessageLookupByLibrary.simpleMessage("书架"),
         "category": m1,
         "globalFontFamily": MessageLookupByLibrary.simpleMessage("全局字体"),
         "globalThemeMode": MessageLookupByLibrary.simpleMessage("全局主题"),
+        "introduction": MessageLookupByLibrary.simpleMessage("简介"),
+        "isReverseOrder": MessageLookupByLibrary.simpleMessage("是否倒序显示"),
         "latestChapter": MessageLookupByLibrary.simpleMessage("最新章节："),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "searchHint": MessageLookupByLibrary.simpleMessage("搜索小说、作者（最好输入完整名称）"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
-        "status": MessageLookupByLibrary.simpleMessage("状态：")
+        "status": m2,
+        "wordsCount": m3
       };
 }

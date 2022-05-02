@@ -3,7 +3,7 @@ import 'package:april/utils/extensions.dart';
 import 'package:april/utils/utils.dart';
 import 'package:books/pages/detail.dart';
 import 'package:books/pages/host.dart';
-import 'package:books/pages/reading.dart';
+import 'package:books/pages/reading/reading.dart';
 import 'package:books/viewmodel/detail/detail_viewmodel.dart';
 import 'package:books/viewmodel/reading/reading_viewmodel.dart';
 import 'package:books/viewmodel/search/search_viewmodel.dart';
@@ -15,7 +15,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import 'generated/l10n.dart';
-import 'viewmodel/settings/font_family_name.dart';
+import 'viewmodel/settings/enums/font_family_name.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -174,7 +174,7 @@ class _MyAppState extends State<MyApp> {
             return MaterialPageRoute(
               builder: (context) => ChangeNotifierProvider(
                 create: (context) => ReadingViewModel(
-                  settings.arguments as String,
+                  settings.arguments as ReadingArguments,
                 ),
                 child: const ReadingPage(),
               ),
