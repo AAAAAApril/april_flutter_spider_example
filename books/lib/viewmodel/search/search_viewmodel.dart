@@ -1,11 +1,10 @@
+import 'package:april/data/notifier_mixin.dart';
 import 'package:april/utils/utils.dart';
 import 'package:books/repository/repository.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:spider/novel/bqg99/bean/search.dart';
-
-import 'package:april/data/notifier_mixin.dart';
 
 ///搜索 ViewModel
 class SearchViewModel extends ViewModel {

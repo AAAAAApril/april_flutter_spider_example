@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:april/utils/json.dart';
 import 'package:spider/novel/bqg99/bean/chapter.dart';
 
@@ -26,8 +27,6 @@ class FavoriteBookBean {
 
   ///最新章节
   final LatestChapterBean latestChapter;
-
-
 
   factory FavoriteBookBean.fromJson(String jsonString) {
     var json = Json(jsonDecode(jsonString));

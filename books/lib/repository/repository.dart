@@ -41,7 +41,7 @@ class Repository {
   // }
 
   ///搜索
-  static Future<List<SearchResultBean>> search(String keywords){
+  static Future<List<SearchResultBean>> search(String keywords) {
     return Bqg99.searchNovel(keywords);
   }
 
