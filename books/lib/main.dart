@@ -105,7 +105,7 @@ class _MyAppState extends State<MyApp> {
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.black54,
+          selectedItemColor: Colors.black87,
           unselectedItemColor: Colors.black26,
         ),
       ),
@@ -179,6 +179,8 @@ class _MyAppState extends State<MyApp> {
                 child: const ReadingPage(),
               ),
             );
+          default:
+            return null;
         }
       },
     );

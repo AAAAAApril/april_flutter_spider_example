@@ -3,7 +3,7 @@ import 'package:april/widgets/value_listenable_builder.dart';
 import 'package:books/generated/l10n.dart';
 import 'package:books/viewmodel/search/search_viewmodel.dart';
 import 'package:books/viewmodel/viewmodel.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:books/widget/net_work_image.dart';
 import 'package:flutter/material.dart';
 import 'package:spider/novel/bqg99/bean/search.dart';
 
@@ -105,12 +105,8 @@ class _Item extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 80,
-
-            ///封面
-            child: CachedNetworkImage(imageUrl: bean.cover),
-          ),
+          ///封面
+          NetworkImageWidget(bean.cover, width: 80),
           const SizedBox(width: 16),
           Expanded(
             child: Column(

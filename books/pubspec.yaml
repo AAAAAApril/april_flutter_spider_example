@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -39,20 +39,27 @@ dependencies:
   # 地址：https://pub.flutter-io.cn/packages/package_info_plus
   package_info_plus: ^1.4.2
   # 地址：https://pub.flutter-io.cn/packages/shared_preferences
-  shared_preferences: ^2.0.13
+  shared_preferences: ^2.0.15
   # 地址：https://pub.flutter-io.cn/packages/cached_network_image
   cached_network_image: ^3.2.0
+  # 地址：https://pub.flutter-io.cn/packages/flutter_cache_manager
+  flutter_cache_manager: ^3.3.0
   # 地址：https://pub.flutter-io.cn/packages/path_provider
-  path_provider: ^2.0.9
+  path_provider: ^2.0.10
   # 地址：https://pub.flutter-io.cn/packages/connectivity_plus
   connectivity_plus: ^2.3.0
+
+  april:
+    git:
+      url: git@github.com:AAAAAApril/flutter_develop_support.git
+      ref: version-1.8.0
 
   spider:
     path: ../
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.4
 
 dev_dependencies:
   flutter_test:
@@ -63,7 +70,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

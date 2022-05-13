@@ -3,7 +3,7 @@ import 'package:books/generated/l10n.dart';
 import 'package:books/viewmodel/detail/detail_viewmodel.dart';
 import 'package:books/viewmodel/reading/reading_viewmodel.dart';
 import 'package:books/viewmodel/viewmodel.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:books/widget/net_work_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:spider/novel/bqg99/bean/chapter.dart';
@@ -119,12 +119,8 @@ class _Info extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(
-        width: 100,
-
-        ///封面
-        child: CachedNetworkImage(imageUrl: bean.cover),
-      ),
+      ///封面
+      NetworkImageWidget(bean.cover, width: 100),
       const SizedBox(width: 8),
       Expanded(
         child: Column(
