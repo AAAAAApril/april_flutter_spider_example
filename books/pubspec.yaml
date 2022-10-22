@@ -42,12 +42,6 @@ dependencies:
   shared_preferences: ^2.0.15
   # 地址：https://pub.flutter-io.cn/packages/cached_network_image
   cached_network_image: ^3.2.2
-  # 地址：https://pub.flutter-io.cn/packages/flutter_cache_manager
-  flutter_cache_manager: ^3.3.0
-  # 地址：https://pub.flutter-io.cn/packages/path_provider
-  path_provider: ^2.0.11
-  # 地址：https://pub.flutter-io.cn/packages/connectivity_plus
-  connectivity_plus: ^3.0.0
 
 #  april:
 #    git:
