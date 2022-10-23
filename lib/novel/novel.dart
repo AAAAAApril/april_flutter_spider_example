@@ -1,28 +1,52 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:spider/novel/beans/chapter_preview_bean.dart';
 
 import 'beans/chapter_bean.dart';
 import 'beans/novel_bean.dart';
-import 'beans/novel_preview_bean.dart';
 import 'fetch_strategy.dart';
 import 'repository.dart';
 
 ///小说接口抽象类
 class Novel {
-  static const Novel instance = Novel._();
-  static late CacheRepository cache;
-  static late NetworkRepository network;
+  const Novel({
+    required this.network,
+    this.cache = const CacheRepository(),
+  });
 
-  const Novel._();
+  ///缓存
+  final CacheRepository cache;
+
+  ///网络
+  final NetworkRepository network;
 
   //============================================================
 
+  ///收藏小说
+  ///[bool] 是否收藏成功
+  Future<bool> addFavorite({
+    required FetchStrategy strategy,
+    required String novelId,
+  }) async {
+    //获取小说详情
+    final NovelBean? novel = await novelDetail(
+      strategy: strategy,
+      novelId: novelId,
+    );
+    if (novel == null) {
+      return false;
+    }
+    //添加到收藏
+    return cache.addFavorite(novel);
+  }
+
+  ///所有收藏的小说
+  Future<List<NovelBean>> allFavorites() => cache.allFavorites();
+
   ///搜索小说
-  static Future<List<NovelPreviewBean>> searchNovels(String keywords) =>
+  Future<List<NovelPreviewBean>> searchNovels(String keywords) =>
       network.searchNovels(keywords);
 
   ///小说详情
-  static Future<NovelBean?> novelDetail({
+  Future<NovelBean?> novelDetail({
     required FetchStrategy strategy,
     required String novelId,
   }) async {
@@ -94,7 +118,7 @@ class Novel {
   }
 
   ///获取章节的所有段落
-  static Future<List<String>> fetchParagraphs({
+  Future<List<String>> fetchParagraphs({
     required FetchStrategy strategy,
     required String novelId,
     required ChapterPreviewBean chapter,

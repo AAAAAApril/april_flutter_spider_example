@@ -10,6 +10,11 @@ class ChapterPreviewBean {
 
   ///章节名
   final String chapterName;
+
+  @override
+  String toString() {
+    return 'ChapterPreviewBean{chapterId: $chapterId, chapterName: $chapterName}';
+  }
 }
 
 ///章节实体（详细）

@@ -28,6 +28,11 @@ class NovelPreviewBean {
 
   ///最新章节
   final ChapterPreviewBean lastChapter;
+
+  @override
+  String toString() {
+    return 'NovelPreviewBean{novelId: $novelId, novelName: $novelName, authorName: $authorName, cover: $cover, categoryName: $categoryName, lastChapter: $lastChapter}';
+  }
 }
 
 ///小说实体（详细）
@@ -40,11 +45,15 @@ class NovelBean extends NovelPreviewBean {
     required super.categoryName,
     required super.lastChapter,
     required this.introduction,
+    required this.updateTime,
     required this.chapters,
   });
 
   ///小说简介
-  final String introduction;
+  final List<String> introduction;
+
+  ///最后更新时间
+  final DateTime updateTime;
 
   ///当前小说所有的章节
   final List<ChapterPreviewBean> chapters;

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:spider/log.dart';
-import 'package:spider/platform/bilibili/bilibili.dart';
+import 'package:spider/novel/beans/chapter_bean.dart';
+import 'package:spider/novel/beans/novel_bean.dart';
+import 'package:spider/novel/fetch_strategy.dart';
+import 'package:spider/novel/love_reading/repository/network.dart';
+import 'package:spider/novel/novel.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,109 +44,71 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Wrap(children: <Widget>[
           ElevatedButton(
-            child: const Text('Ou中文网，小说分类接口'),
-            onPressed: () {
-              // OuOou.allClassifies().then<void>((value) {
-              //   for (var element in value) {
-              //     Log.print(value: () => element);
-              //   }
-              // });
+            child: const Text('测试爱读书网，获取章节所有段落'),
+            onPressed: () async {
+              final Novel novel = Novel(
+                network: LoveReadingNetworkRepository(),
+              );
+              const ChapterPreviewBean chapter = ChapterPreviewBean(
+                chapterId: '1',
+                chapterName: '第一章 绯红',
+              );
+              final List<String> paragraphs = await novel.fetchParagraphs(
+                strategy: FetchStrategy.networkFirst,
+                novelId: '1133',
+                chapter: chapter,
+              );
+              debugPrint('===== BEGIN ===== 诡秘之主 ${chapter.chapterName}');
+              for (var element in paragraphs) {
+                debugPrint(element);
+              }
+              debugPrint('====== END ====== 诡秘之主 ${chapter.chapterName}');
             },
           ),
           ElevatedButton(
-            child: const Text('Ou中文网，《黎明之剑》详情接口'),
-            onPressed: () {
-              // OuOou.novelDetail('ou_347900').then(
-              //   (value) => Log.print(value: () => value),
-              // );
+            child: const Text('测试爱读书网，获取小说详情'),
+            onPressed: () async {
+              final Novel novel = Novel(
+                network: LoveReadingNetworkRepository(),
+              );
+              final NovelBean? novelDetail = await novel.novelDetail(
+                strategy: FetchStrategy.networkFirst,
+                //《诡秘之主》
+                novelId: '1133',
+              );
+              if (novelDetail == null) {
+                debugPrint('==== 未获取到小说详情 ====');
+                return;
+              }
+              debugPrint('===== BEGIN ===== 小说详情');
+              debugPrint('小说ID：${novelDetail.novelId}');
+              debugPrint('小说名：${novelDetail.novelName}');
+              debugPrint('作者名：${novelDetail.authorName}');
+              debugPrint('分类名：${novelDetail.categoryName}');
+              debugPrint('简介：${novelDetail.introduction.length}段');
+              for (var element in novelDetail.introduction) {
+                debugPrint(element);
+              }
+              debugPrint('封面：${novelDetail.cover}');
+              debugPrint('最后一章：${novelDetail.lastChapter}');
+              debugPrint('最后更新时间：${novelDetail.updateTime}');
+              debugPrint('小说总章数：${novelDetail.chapters.length}');
+              debugPrint('====== END ====== 小说详情');
             },
           ),
           ElevatedButton(
-            child: const Text('Ou中文网，《黎明之剑》第一章详情'),
-            onPressed: () {
-              // OuOou.chapterDetail(
-              //   novelId: 'ou_347900',
-              //   bean: const ChapterBean(
-              //     id: '30237236',
-              //     name: '第一章 穿越成一个视角是什么鬼',
-              //   ),
-              // ).then(
-              //   (value) => Log.print(value: () => value?.paragraphs),
-              // );
-            },
-          ),
-          ElevatedButton(
-            child: const Text('Ou站内搜索《黎明之剑》'),
-            onPressed: () {
-              // OuOou.searchNovel('黎明之剑').then((value) {
-              //   for (var element in value) {
-              //     Log.print(tag: '搜索结果', value: () => element);
-              //   }
-              // });
-            },
-          ),
-          ElevatedButton(
-            child: const Text('BiliBili我关注的人的动态列表'),
-            onPressed: () {
-              BiliBili.followersDynamics().then((value) {
-                if (!value.succeed) {
-                  return;
-                }
-                Log.print(tag: '分页信息', value: () => value.toString());
-                for (var element in value.data) {
-                  Log.print(
-                    tag: '动态：${element.id}',
-                    value: () => element.toMap(),
-                  );
-                }
-              });
-            },
-          ),
-          ElevatedButton(
-            child: const Text('BiliBili检查是否有新动态'),
-            onPressed: () {
-              BiliBili.checkUpdate(lastDynamicId: '649740153103843337');
-            },
-          ),
-          ElevatedButton(
-            child: const Text('笔趣阁搜索《黎明之剑》'),
-            onPressed: () {
-              // Bqg99.searchNovel('黎明之剑').then((value) {
-              //   Log.print(tag: '《黎明之剑》搜索结果');
-              //   for (var element in value) {
-              //     Log.print(value: () => element.toMap());
-              //   }
-              // });
-            },
-          ),
-          ElevatedButton(
-            child: const Text('笔趣阁查询《黎明之剑》详情'),
-            onPressed: () {
-              // Bqg99.novelDetail('1944105').then((value) {
-              //   if (value == null) {
-              //     Log.print(tag: '获取《黎明之剑》详情失败');
-              //     return;
-              //   }
-              //   Log.print(tag: '《黎明之剑》详情', value: () => value.toMap());
-              // });
-            },
-          ),
-          ElevatedButton(
-            child: const Text('笔趣阁获取《黎明之剑》章节《完本感言》详情'),
-            onPressed: () {
-              // Bqg99.chapterDetail(
-              //   novelId: '1944105',
-              //   chapterId: '308697942',
-              // ).then((value) {
-              //   if (value == null) {
-              //     Log.print(tag: '获取章节详情失败');
-              //     return;
-              //   }
-              //   Log.print(tag: '章节详情', value: () => value.toMap());
-              //   for (var element in value.paragraphs) {
-              //     Log.print(value: () => element);
-              //   }
-              // });
+            child: const Text('测试爱读书网，搜索小说'),
+            onPressed: () async {
+              final Novel novel = Novel(
+                network: LoveReadingNetworkRepository(),
+              );
+              final List<NovelPreviewBean> novels =
+                  await novel.searchNovels('余火');
+              debugPrint('===== BEGIN ===== 搜索结果');
+              for (var element in novels) {
+                debugPrint(element.toString());
+              }
+              debugPrint('====== END ====== 搜索结果');
             },
           ),
         ]),
