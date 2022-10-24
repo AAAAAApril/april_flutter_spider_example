@@ -1,10 +1,9 @@
-import 'package:april/data/notifier_mixin.dart';
 import 'package:april/utils/utils.dart';
-import 'package:books/repository/repository.dart';
+import 'package:books/main.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:spider/novel/bqg99/bean/search.dart';
+import 'package:spider/novel/beans/novel_bean.dart';
 
 ///搜索 ViewModel
 class SearchViewModel extends ViewModel {
@@ -12,19 +11,20 @@ class SearchViewModel extends ViewModel {
   final TextEditingController editingController = TextEditingController();
 
   ///搜索结果
-  late final ValueNotifier<List<SearchResultBean>> _searchResult =
-      ValueNotifier(<SearchResultBean>[])..withMixin(this);
+  final ValueNotifier<List<NovelPreviewBean>> _searchResult =
+      ValueNotifier(<NovelPreviewBean>[]);
 
-  ValueListenable<List<SearchResultBean>> get searchResult => _searchResult;
+  ValueListenable<List<NovelPreviewBean>> get searchResult => _searchResult;
 
   ///是否正在刷新
-  late final ValueNotifier<bool> _isRefreshing = ValueNotifier(false)
-    ..withMixin(this);
+  final ValueNotifier<bool> _isRefreshing = ValueNotifier(false);
 
   ValueListenable<bool> get isRefreshing => _isRefreshing;
 
   @override
   void dispose() {
+    _isRefreshing.dispose();
+    _searchResult.dispose();
     editingController.dispose();
     super.dispose();
   }
@@ -38,7 +38,7 @@ class SearchViewModel extends ViewModel {
   void doSearch() async {
     var keywords = editingController.text.trim();
     if (keywords.isEmpty) {
-      _searchResult.value = <SearchResultBean>[];
+      _searchResult.value = <NovelPreviewBean>[];
       return;
     }
     //隐藏输入法，并清空焦点
@@ -46,7 +46,7 @@ class SearchViewModel extends ViewModel {
     clearFocus();
 
     _isRefreshing.value = true;
-    Repository.search(keywords).then<void>((value) {
+    novel.searchNovels(keywords).then<void>((value) {
       _searchResult.value = value;
     }).whenComplete(() {
       _isRefreshing.value = false;

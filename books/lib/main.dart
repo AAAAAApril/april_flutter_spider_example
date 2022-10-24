@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:spider/novel/novel.dart';
+import 'package:spider/novel/love_reading/repository/network.dart';
 
 import 'generated/l10n.dart';
 import 'viewmodel/settings/enums/font_family_name.dart';
@@ -186,3 +188,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+///小说数据源
+final Novel novel = Novel(
+  network: LoveReadingNetworkRepository(),
+);

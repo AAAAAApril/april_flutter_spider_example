@@ -23,8 +23,8 @@ class Novel {
   ///收藏小说
   ///[bool] 是否收藏成功
   Future<bool> addFavorite({
-    required FetchStrategy strategy,
     required String novelId,
+    FetchStrategy strategy = FetchStrategy.networkFirst,
   }) async {
     //获取小说详情
     final NovelBean? novel = await novelDetail(
@@ -47,8 +47,8 @@ class Novel {
 
   ///小说详情
   Future<NovelBean?> novelDetail({
-    required FetchStrategy strategy,
     required String novelId,
+    FetchStrategy strategy = FetchStrategy.networkFirst,
   }) async {
     final ConnectivityResult connectivity =
         await (Connectivity().checkConnectivity());
@@ -119,9 +119,9 @@ class Novel {
 
   ///获取章节的所有段落
   Future<List<String>> fetchParagraphs({
-    required FetchStrategy strategy,
     required String novelId,
     required ChapterPreviewBean chapter,
+    FetchStrategy strategy = FetchStrategy.networkFirst,
   }) async {
     final ConnectivityResult connectivity =
         await (Connectivity().checkConnectivity());

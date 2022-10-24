@@ -5,7 +5,7 @@ import 'package:books/viewmodel/search/search_viewmodel.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:books/widget/net_work_image.dart';
 import 'package:flutter/material.dart';
-import 'package:spider/novel/bqg99/bean/search.dart';
+import 'package:spider/novel/beans/novel_bean.dart';
 
 ///搜索页
 class SearchPage extends StatelessWidget {
@@ -62,7 +62,7 @@ class SearchPage extends StatelessWidget {
       Expanded(
         child: ValueListenableBuilder<bool>(
           valueListenable: viewModel.isRefreshing,
-          child: ValueListenableBuilder<List<SearchResultBean>>(
+          child: ValueListenableBuilder<List<NovelPreviewBean>>(
             valueListenable: viewModel.searchResult,
             builder: (_, value, __) => ListView.separated(
               itemCount: value.length,
@@ -93,14 +93,14 @@ class _Item extends StatelessWidget {
     required this.bean,
   }) : super(key: key);
 
-  final SearchResultBean bean;
+  final NovelPreviewBean bean;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
         ///前往书籍详情
-        Navigator.pushNamed(context, 'detail', arguments: bean.id);
+        Navigator.pushNamed(context, 'detail', arguments: bean.novelId);
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +115,7 @@ class _Item extends StatelessWidget {
               children: <Widget>[
                 ///书名
                 Text(
-                  bean.name,
+                  bean.novelName,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -123,10 +123,10 @@ class _Item extends StatelessWidget {
                 ),
 
                 ///作者
-                Text(Strings.current.author(bean.author)),
+                Text(Strings.current.author(bean.authorName)),
 
                 ///类型
-                Text(Strings.current.category(bean.category)),
+                Text(Strings.current.category(bean.categoryName)),
 
                 ///最近章节
                 Text.rich(
@@ -134,7 +134,7 @@ class _Item extends StatelessWidget {
                     text: Strings.current.latestChapter,
                     children: [
                       TextSpan(
-                        text: bean.latestUpdateChapter.name,
+                        text: bean.lastChapter.chapterName,
                         style: const TextStyle(
                           color: Colors.blue,
                         ),

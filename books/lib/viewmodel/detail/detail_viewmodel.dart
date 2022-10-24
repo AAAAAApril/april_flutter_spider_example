@@ -1,8 +1,7 @@
-import 'package:april/data/notifier_mixin.dart';
-import 'package:books/repository/repository.dart';
+import 'package:books/main.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/foundation.dart';
-import 'package:spider/novel/bqg99/bean/novel.dart';
+import 'package:spider/novel/beans/novel_bean.dart';
 
 ///书籍详情 ViewModel
 class BookDetailViewModel extends ViewModel {
@@ -10,18 +9,23 @@ class BookDetailViewModel extends ViewModel {
     _refresh();
   }
 
+  @override
+  void dispose() {
+    _reverseOrder.dispose();
+    _bookDetail.dispose();
+    super.dispose();
+  }
+
   ///书籍 id
   final String bookId;
 
   ///书籍详情
-  late final ValueNotifier<NovelBean?> _bookDetail =
-      ValueNotifier<NovelBean?>(null)..withMixin(this);
+  final ValueNotifier<NovelBean?> _bookDetail = ValueNotifier<NovelBean?>(null);
 
   ValueListenable<NovelBean?> get bookDetail => _bookDetail;
 
   ///所有章节是否倒序显示
-  late final ValueNotifier<bool> _reverseOrder = ValueNotifier<bool>(true)
-    ..withMixin(this);
+  final ValueNotifier<bool> _reverseOrder = ValueNotifier<bool>(true);
 
   ValueListenable<bool> get reverseOrder => _reverseOrder;
 
@@ -32,6 +36,6 @@ class BookDetailViewModel extends ViewModel {
 
   ///刷新详情数据
   void _refresh() async {
-    _bookDetail.value = await Repository.bookDetail(bookId);
+    _bookDetail.value = await novel.novelDetail(novelId: bookId);
   }
 }

@@ -1,5 +1,5 @@
 import 'package:april/data/notifier_mixin.dart';
-import 'package:books/repository/repository.dart';
+import 'package:books/main.dart';
 import 'package:books/viewmodel/settings/enums/network_type.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/foundation.dart';
@@ -12,7 +12,7 @@ import 'global_configs.dart';
 class SettingsViewModel extends ViewModel {
   SettingsViewModel() {
     //取出配置数据
-    Repository.getGlobalSettings().then<void>((value) {
+    novel.getGlobalSettings().then<void>((value) {
       _globalConfigs.value = value;
     });
   }
@@ -49,6 +49,6 @@ class SettingsViewModel extends ViewModel {
 
   ///更新缓存
   void _notifyCache() {
-    Repository.setGlobalSettings(_globalConfigs.value);
+    novel.setGlobalSettings(_globalConfigs.value);
   }
 }

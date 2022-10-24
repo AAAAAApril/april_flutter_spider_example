@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:april/utils/extensions.dart';
-import 'package:books/repository/bean/favorite_book_bean.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 

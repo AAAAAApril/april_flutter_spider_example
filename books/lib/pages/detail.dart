@@ -6,8 +6,8 @@ import 'package:books/viewmodel/viewmodel.dart';
 import 'package:books/widget/net_work_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:spider/novel/bqg99/bean/chapter.dart';
-import 'package:spider/novel/bqg99/bean/novel.dart';
+import 'package:spider/novel/beans/chapter_bean.dart';
+import 'package:spider/novel/beans/novel_bean.dart';
 
 ///书籍详情页
 class BookDetailPage extends StatelessWidget {
@@ -20,7 +20,7 @@ class BookDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: SelectorListenableBuilder<NovelBean?, String>(
           valueListenable: viewModel.bookDetail,
-          selector: (value) => value?.name ?? '',
+          selector: (value) => value?.novelName ?? '',
           builder: (_, bookName, __) => Text(bookName),
         ),
         actions: [
@@ -90,13 +90,13 @@ class BookDetailPage extends StatelessWidget {
                   ),
                 ]),
               ),
-              SelectorListenableBuilder<bool, List<ChapterBean>>(
+              SelectorListenableBuilder<bool, List<ChapterPreviewBean>>(
                 valueListenable: viewModel.reverseOrder,
                 selector: (reverse) {
                   if (reverse) {
-                    return List.of(value.allChapters).reversed.toList();
+                    return List.of(value.chapters).reversed.toList();
                   }
-                  return value.allChapters;
+                  return value.chapters;
                 },
                 builder: (_, value, __) => _Chapters(chapters: value),
               ),
@@ -127,16 +127,10 @@ class _Info extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ///作者
-            Text(Strings.current.author(bean.author)),
+            Text(Strings.current.author(bean.authorName)),
 
             ///分类
-            Text(Strings.current.category(bean.category)),
-
-            ///状态
-            Text(Strings.current.status(bean.status)),
-
-            ///字数
-            Text(Strings.current.wordsCount(bean.totalWordsCount)),
+            Text(Strings.current.category(bean.categoryName)),
 
             ///最后更新章节
             Text.rich(
@@ -144,7 +138,7 @@ class _Info extends StatelessWidget {
                 text: Strings.current.latestChapter,
                 children: [
                   TextSpan(
-                    text: bean.latestUpdateChapter.name,
+                    text: bean.lastChapter.chapterName,
                     style: const TextStyle(
                       color: Colors.blue,
                     ),
@@ -155,8 +149,8 @@ class _Info extends StatelessWidget {
                           context,
                           'reading',
                           arguments: ReadingArguments(
-                            bean.id,
-                            bean.latestUpdateChapter.id,
+                            bean.novelId,
+                            bean.lastChapter.chapterId,
                           ),
                         );
                       },
@@ -177,16 +171,16 @@ class _Chapters extends StatelessWidget {
     required this.chapters,
   }) : super(key: key);
 
-  final List<ChapterBean> chapters;
+  final List<ChapterPreviewBean> chapters;
 
   @override
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          final ChapterBean chapter = chapters[index];
+          final ChapterPreviewBean chapter = chapters[index];
           return GestureDetector(
-            child: Text(chapter.name),
+            child: Text(chapter.chapterName),
             onTap: () {
               /// 前往阅读章节
               Navigator.pushNamed(
@@ -194,7 +188,7 @@ class _Chapters extends StatelessWidget {
                 'reading',
                 arguments: ReadingArguments(
                   ViewModel.of<BookDetailViewModel>(context).bookId,
-                  chapter.id,
+                  chapter.chapterId,
                 ),
               );
             },
