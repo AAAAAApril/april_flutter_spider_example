@@ -1,5 +1,5 @@
 import 'package:april/utils/utils.dart';
-import 'package:books/main.dart';
+import 'package:books/books.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +46,7 @@ class SearchViewModel extends ViewModel {
     clearFocus();
 
     _isRefreshing.value = true;
-    novel.searchNovels(keywords).then<void>((value) {
+    Books.repository.searchNovels(keywords).then<void>((value) {
       _searchResult.value = value;
     }).whenComplete(() {
       _isRefreshing.value = false;

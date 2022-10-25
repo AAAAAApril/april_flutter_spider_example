@@ -24,10 +24,9 @@ class BookDetailPage extends StatelessWidget {
           builder: (_, bookName, __) => Text(bookName),
         ),
         actions: [
+          //添加到书架按钮
           IconButton(
-            onPressed: () {
-              //TODO 添加到书架
-            },
+            onPressed: viewModel.add2Favorite,
             icon: const Icon(Icons.favorite_rounded),
           ),
         ],
@@ -59,7 +58,7 @@ class BookDetailPage extends StatelessWidget {
                         color: Colors.blue,
                       ),
                     ),
-                    Text(value.introduction),
+                    ...value.introduction.map<Widget>((e) => Text(e)),
                   ],
                 ),
               ),

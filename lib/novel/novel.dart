@@ -6,17 +6,26 @@ import 'fetch_strategy.dart';
 import 'repository.dart';
 
 ///小说接口抽象类
-class Novel {
+class Novel<N extends NetworkRepository, C extends CacheRepository> {
+  static Novel defCache<N extends NetworkRepository>({
+    required N network,
+  }) {
+    return Novel<N, CacheRepository>(
+      network: network,
+      cache: const CacheRepository(),
+    );
+  }
+
   const Novel({
     required this.network,
-    this.cache = const CacheRepository(),
+    required this.cache,
   });
 
   ///缓存
-  final CacheRepository cache;
+  final C cache;
 
   ///网络
-  final NetworkRepository network;
+  final N network;
 
   //============================================================
 

@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             child: const Text('测试爱读书网，获取章节所有段落'),
             onPressed: () async {
-              final Novel novel = Novel(
+              final Novel novel = Novel.defCache(
                 network: LoveReadingNetworkRepository(),
               );
               const ChapterPreviewBean chapter = ChapterPreviewBean(
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             child: const Text('测试爱读书网，获取小说详情'),
             onPressed: () async {
-              final Novel novel = Novel(
+              final Novel novel = Novel.defCache(
                 network: LoveReadingNetworkRepository(),
               );
               final NovelBean? novelDetail = await novel.novelDetail(
@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             child: const Text('测试爱读书网，搜索小说'),
             onPressed: () async {
-              final Novel novel = Novel(
+              final Novel novel = Novel.defCache(
                 network: LoveReadingNetworkRepository(),
               );
               final List<NovelPreviewBean> novels =

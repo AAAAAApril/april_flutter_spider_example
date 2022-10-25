@@ -1,3 +1,5 @@
+import 'package:april/utils/json.dart';
+
 import 'chapter_bean.dart';
 
 ///小说实体（简略）
@@ -49,6 +51,32 @@ class NovelBean extends NovelPreviewBean {
     required this.chapters,
   });
 
+  factory NovelBean.fromJson(Map<String, dynamic> map) {
+    final json = Json(map);
+    return NovelBean(
+      novelId: json.getString('novelId'),
+      novelName: json.getString('novelName'),
+      authorName: json.getString('authorName'),
+      cover: json.getString('cover'),
+      categoryName: json.getString('categoryName'),
+      lastChapter: ChapterPreviewBean.fromJson(
+        Map<String, dynamic>.from(
+          (json.get('lastChapter') as Map?) ?? <String, dynamic>{},
+        ),
+      ),
+      introduction: json.getStringList('introduction'),
+      updateTime: DateTime.fromMillisecondsSinceEpoch(
+        json.getInt('updateTime'),
+      ),
+      chapters: json.getList<ChapterPreviewBean>(
+        'chapters',
+        decoder: (map) => ChapterPreviewBean.fromJson(
+          Map<String, dynamic>.from(map),
+        ),
+      ),
+    );
+  }
+
   ///小说简介
   final List<String> introduction;
 
@@ -57,4 +85,20 @@ class NovelBean extends NovelPreviewBean {
 
   ///当前小说所有的章节
   final List<ChapterPreviewBean> chapters;
+
+  Map<String, dynamic> toJson() => {
+        'novelId': novelId,
+        'novelName': novelName,
+        'authorName': authorName,
+        'cover': cover,
+        'categoryName': categoryName,
+        'lastChapter': lastChapter.toJson(),
+        'introduction': introduction,
+        'updateTime': updateTime.millisecondsSinceEpoch,
+        'chapters': chapters
+            .map<Map<String, dynamic>>(
+              (e) => e.toJson(),
+            )
+            .toList(),
+      };
 }

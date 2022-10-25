@@ -1,7 +1,8 @@
-import 'package:books/main.dart';
+import 'package:books/books.dart';
 import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
+import 'package:spider/novel/fetch_strategy.dart';
 
 ///书籍详情 ViewModel
 class BookDetailViewModel extends ViewModel {
@@ -36,6 +37,16 @@ class BookDetailViewModel extends ViewModel {
 
   ///刷新详情数据
   void _refresh() async {
-    _bookDetail.value = await novel.novelDetail(novelId: bookId);
+    _bookDetail.value = await Books.repository.novelDetail(
+      novelId: bookId,
+      strategy: FetchStrategy.cacheFirst,
+    );
+  }
+
+  ///添加到书架
+  Future<void> add2Favorite() async {
+    if (await Books.repository.addFavorite(novelId: bookId)) {
+      _refresh();
+    }
   }
 }

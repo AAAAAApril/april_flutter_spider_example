@@ -1,9 +1,19 @@
+import 'package:april/utils/json.dart';
+
 ///章节实体（简略）
 class ChapterPreviewBean {
   const ChapterPreviewBean({
     required this.chapterId,
     required this.chapterName,
   });
+
+  factory ChapterPreviewBean.fromJson(Map<String, dynamic> map) {
+    final json = Json(map);
+    return ChapterPreviewBean(
+      chapterId: json.getString('chapterId'),
+      chapterName: json.getString('chapterName'),
+    );
+  }
 
   ///章节 ID
   final String chapterId;
@@ -15,6 +25,11 @@ class ChapterPreviewBean {
   String toString() {
     return 'ChapterPreviewBean{chapterId: $chapterId, chapterName: $chapterName}';
   }
+
+  Map<String, dynamic> toJson() => {
+        'chapterId': chapterId,
+        'chapterName': chapterName,
+      };
 }
 
 ///章节实体（详细）
