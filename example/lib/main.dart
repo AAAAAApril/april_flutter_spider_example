@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:spider/novel/beans/chapter_bean.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
 import 'package:spider/novel/fetch_strategy.dart';
-import 'package:spider/novel/love_reading/repository/network.dart';
 import 'package:spider/novel/novel.dart';
 
 void main() {
@@ -46,9 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             child: const Text('测试爱读书网，获取章节所有段落'),
             onPressed: () async {
-              final Novel novel = Novel.defCache(
-                network: LoveReadingNetworkRepository(),
-              );
+              final Novel novel = Novel.loveReading();
               const ChapterPreviewBean chapter = ChapterPreviewBean(
                 chapterId: '1',
                 chapterName: '第一章 绯红',
@@ -68,9 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             child: const Text('测试爱读书网，获取小说详情'),
             onPressed: () async {
-              final Novel novel = Novel.defCache(
-                network: LoveReadingNetworkRepository(),
-              );
+              final Novel novel = Novel.loveReading();
               final NovelBean? novelDetail = await novel.novelDetail(
                 strategy: FetchStrategy.networkFirst,
                 //《诡秘之主》
@@ -99,9 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             child: const Text('测试爱读书网，搜索小说'),
             onPressed: () async {
-              final Novel novel = Novel.defCache(
-                network: LoveReadingNetworkRepository(),
-              );
+              final Novel novel = Novel.loveReading();
               final List<NovelPreviewBean> novels =
                   await novel.searchNovels('余火');
               debugPrint('===== BEGIN ===== 搜索结果');

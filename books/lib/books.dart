@@ -16,7 +16,7 @@ class Books {
   static final Novel<LoveReadingNetworkRepository, BookCacheRepository>
       repository = Novel<LoveReadingNetworkRepository, BookCacheRepository>(
     network: LoveReadingNetworkRepository(),
-    cache: const BookCacheRepository._(),
+    cache: BookCacheRepository._(),
   );
 
   ///书架上收藏的所有书籍
@@ -34,5 +34,5 @@ class Books {
 
 ///TODO 本地缓存
 class BookCacheRepository extends LoveReadingCacheRepository {
-  const BookCacheRepository._() : super();
+  BookCacheRepository._() : super();
 }

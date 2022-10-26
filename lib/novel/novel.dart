@@ -1,4 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:spider/novel/love_reading/repository/cache.dart';
+import 'package:spider/novel/love_reading/repository/network.dart';
 
 import 'beans/chapter_bean.dart';
 import 'beans/novel_bean.dart';
@@ -7,12 +9,10 @@ import 'repository.dart';
 
 ///小说接口抽象类
 class Novel<N extends NetworkRepository, C extends CacheRepository> {
-  static Novel defCache<N extends NetworkRepository>({
-    required N network,
-  }) {
-    return Novel<N, CacheRepository>(
-      network: network,
-      cache: const CacheRepository(),
+  static Novel loveReading() {
+    return Novel<LoveReadingNetworkRepository, LoveReadingCacheRepository>(
+      network: LoveReadingNetworkRepository(),
+      cache: LoveReadingCacheRepository(),
     );
   }
 
@@ -47,8 +47,20 @@ class Novel<N extends NetworkRepository, C extends CacheRepository> {
     return cache.addFavorite(novel);
   }
 
+  ///取消收藏小说
+  Future<bool> removeFavorite(String novelId) => cache.removeFavorite(novelId);
+
   ///所有收藏的小说
-  Future<List<NovelBean>> allFavorites() => cache.allFavorites();
+  Future<List<NovelBean>> allFavorites() async {
+    final List<NovelBean> novels = <NovelBean>[];
+    for (var novelId in await cache.allFavorites()) {
+      var detail = await novelDetail(novelId: novelId);
+      if (detail != null) {
+        novels.add(detail);
+      }
+    }
+    return novels;
+  }
 
   ///搜索小说
   Future<List<NovelPreviewBean>> searchNovels(String keywords) =>

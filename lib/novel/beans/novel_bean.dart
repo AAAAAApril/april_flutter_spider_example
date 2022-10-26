@@ -77,6 +77,17 @@ class NovelBean extends NovelPreviewBean {
     );
   }
 
+  factory NovelBean.fromJsonSplit({
+    required Map<String, dynamic> infoMap,
+    required Map<String, dynamic> chapterMap,
+  }) {
+    return NovelBean.fromJson(
+      <String, dynamic>{}
+        ..addAll(infoMap)
+        ..addAll(chapterMap),
+    );
+  }
+
   ///小说简介
   final List<String> introduction;
 
@@ -86,7 +97,18 @@ class NovelBean extends NovelPreviewBean {
   ///当前小说所有的章节
   final List<ChapterPreviewBean> chapters;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      toJsonWithoutChapters()..addAll(toJsonOnlyChapters());
+
+  Map<String, dynamic> toJsonOnlyChapters() => {
+        'chapters': chapters
+            .map<Map<String, dynamic>>(
+              (e) => e.toJson(),
+            )
+            .toList(),
+      };
+
+  Map<String, dynamic> toJsonWithoutChapters() => {
         'novelId': novelId,
         'novelName': novelName,
         'authorName': authorName,
@@ -95,10 +117,5 @@ class NovelBean extends NovelPreviewBean {
         'lastChapter': lastChapter.toJson(),
         'introduction': introduction,
         'updateTime': updateTime.millisecondsSinceEpoch,
-        'chapters': chapters
-            .map<Map<String, dynamic>>(
-              (e) => e.toJson(),
-            )
-            .toList(),
       };
 }
