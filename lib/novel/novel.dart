@@ -51,10 +51,12 @@ class Novel<N extends NetworkRepository, C extends CacheRepository> {
   Future<bool> removeFavorite(String novelId) => cache.removeFavorite(novelId);
 
   ///所有收藏的小说
-  Future<List<NovelBean>> allFavorites() async {
+  Future<List<NovelBean>> allFavorites({
+    FetchStrategy strategy = FetchStrategy.networkFirst,
+  }) async {
     final List<NovelBean> novels = <NovelBean>[];
     for (var novelId in await cache.allFavorites()) {
-      var detail = await novelDetail(novelId: novelId);
+      var detail = await novelDetail(novelId: novelId, strategy: strategy);
       if (detail != null) {
         novels.add(detail);
       }

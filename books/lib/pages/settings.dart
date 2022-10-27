@@ -1,7 +1,6 @@
 import 'package:april/widgets/value_listenable_builder.dart';
 import 'package:books/generated/l10n.dart';
 import 'package:books/viewmodel/settings/enums/font_family_name.dart';
-import 'package:books/viewmodel/settings/enums/network_type.dart';
 import 'package:books/viewmodel/settings/enums/theme_mode.dart';
 import 'package:books/viewmodel/settings/global_configs.dart';
 import 'package:books/viewmodel/settings/settings_viewmodel.dart';
@@ -29,18 +28,6 @@ class SettingsPage extends StatelessWidget {
         },
       ),
 
-      ///允许使用的网络类型
-      _SwitchableConfigs<GlobalConfigs, NetworkType>(
-        title: Strings.current.allowedNetworkType,
-        listenable: settingViewModel.globalConfigs,
-        configs: NetworkType.values,
-        selector: (configs, type) => configs.allowedNetworkType == type,
-        itemBuilder: (_, type) => Text(type.allowedNetworkName),
-        onSelect: (type) {
-          settingViewModel.changeAllowedNetworkType(type);
-        },
-      ),
-
       ///全局字体样式
       _SwitchableConfigs<GlobalConfigs, FontFamilyName>(
         title: Strings.current.globalFontFamily,
@@ -48,8 +35,8 @@ class SettingsPage extends StatelessWidget {
         configs: FontFamilyName.values,
         selector: (configs, name) => configs.globalFontFamily == name,
         itemBuilder: (_, familyName) => Text(
-          familyName.fontName,
-          style: TextStyle(fontFamily: familyName.name),
+          familyName.text,
+          style: TextStyle(fontFamily: familyName.value),
         ),
         onSelect: (familyName) {
           settingViewModel.changeGlobalFontFamily(familyName);

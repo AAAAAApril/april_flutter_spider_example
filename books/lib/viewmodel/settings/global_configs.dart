@@ -4,7 +4,6 @@ import 'package:april/utils/json.dart';
 import 'package:flutter/material.dart';
 
 import 'enums/font_family_name.dart';
-import 'enums/network_type.dart';
 
 ///全局配置
 class GlobalConfigs {
@@ -20,7 +19,6 @@ class GlobalConfigs {
     globalFontFamily: FontFamilyName.none,
     readFontFamily: FontFamilyName.none,
     themeMode: ThemeMode.system,
-    allowedNetworkType: NetworkType.wifi,
   );
 
   const GlobalConfigs._({
@@ -28,7 +26,6 @@ class GlobalConfigs {
     required this.globalFontFamily,
     required this.readFontFamily,
     required this.themeMode,
-    required this.allowedNetworkType,
   });
 
   ///阅读页文字大小
@@ -43,9 +40,6 @@ class GlobalConfigs {
   ///界面主题样式
   final ThemeMode themeMode;
 
-  ///允许使用的网络类型
-  final NetworkType allowedNetworkType;
-
   factory GlobalConfigs.fromJson(String? jsonString) {
     if (jsonString == null) {
       return def;
@@ -58,14 +52,17 @@ class GlobalConfigs {
     }
     var json = Json(map);
     return GlobalConfigs._(
-      readFontSize: json.getInt('readFontSize', def.readFontSize),
-      globalFontFamily: FontFamilyName.values.byName(
+      readFontSize: json.getInt(
+        'readFontSize',
+        def.readFontSize,
+      ),
+      globalFontFamily: FontFamilyName.values.byValue(
         json.getString(
           'globalFontFamily',
           def.globalFontFamily.name,
         ),
       ),
-      readFontFamily: FontFamilyName.values.byName(
+      readFontFamily: FontFamilyName.values.byValue(
         json.getString(
           'readFontFamily',
           def.readFontFamily.name,
@@ -77,12 +74,6 @@ class GlobalConfigs {
           def.themeMode.name,
         ),
       ),
-      allowedNetworkType: NetworkType.values.byName(
-        json.getString(
-          'allowedNetworkType',
-          def.allowedNetworkType.name,
-        ),
-      ),
     );
   }
 
@@ -91,14 +82,12 @@ class GlobalConfigs {
     FontFamilyName? globalFontFamily,
     FontFamilyName? readFontFamily,
     ThemeMode? themeMode,
-    NetworkType? allowedNetworkType,
   }) {
     return GlobalConfigs._(
       readFontSize: readFontSize ?? this.readFontSize,
       globalFontFamily: globalFontFamily ?? this.globalFontFamily,
       readFontFamily: readFontFamily ?? this.readFontFamily,
       themeMode: themeMode ?? this.themeMode,
-      allowedNetworkType: allowedNetworkType ?? this.allowedNetworkType,
     );
   }
 
@@ -107,7 +96,6 @@ class GlobalConfigs {
         'globalFontFamily': globalFontFamily.name,
         'readFontFamily': readFontFamily.name,
         'themeMode': themeMode.name,
-        'allowedNetworkType': allowedNetworkType.name,
       };
 
   @override

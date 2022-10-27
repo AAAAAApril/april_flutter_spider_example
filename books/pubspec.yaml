@@ -106,22 +106,14 @@ flutter:
   #         weight: 700
 
   fonts:
-    # 华文楷体
-    - family: hwKaiTi
-      fonts:
-        - asset: fonts/HWKaiTi-Regular.ttf
     # 华文行楷
-    - family: hwXingKai
+    - family: hw_XingKai
       fonts:
         - asset: fonts/HWXingKai-Regular.ttf
     # 华文新魏
-    - family: hwXinWei
+    - family: hw_XinWei
       fonts:
         - asset: fonts/HWXinWei-Regular.ttf
-    # 楷体
-    - family: kaiTi
-      fonts:
-        - asset: fonts/KaiTi-Regular.ttf
     # 隶书
     - family: liShu
       fonts:

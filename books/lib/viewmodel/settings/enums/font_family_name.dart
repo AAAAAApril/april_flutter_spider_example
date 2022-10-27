@@ -1,39 +1,43 @@
 ///字体样式名
 enum FontFamilyName {
   ///无字体（使用默认字体）
-  none,
-
-  ///华文楷体
-  hwKaiTi,
+  none(
+    text: '默认',
+  ),
 
   ///华文行楷
-  hwXingKai,
+  hwXingKai(
+    value: 'hw_XingKai',
+    text: '华文行楷',
+  ),
 
   ///华文新魏
-  hwXinWei,
-
-  ///楷体
-  kaiTi,
+  hwXinWei(
+    value: 'hw_XinWei',
+    text: '华文新魏',
+  ),
 
   ///隶书
-  liShu,
+  liShu(
+    value: 'liShu',
+    text: '隶书',
+  );
+
+  const FontFamilyName({
+    this.value,
+    required this.text,
+  });
+
+  final String? value;
+  final String text;
 }
 
-extension FontFamilyNameExt on FontFamilyName {
-  String get fontName {
-    switch (this) {
-      case FontFamilyName.none:
-        return '默认';
-      case FontFamilyName.hwKaiTi:
-        return '华文楷体';
-      case FontFamilyName.hwXingKai:
-        return '华文行楷';
-      case FontFamilyName.hwXinWei:
-        return '华文新魏';
-      case FontFamilyName.kaiTi:
-        return '楷体';
-      case FontFamilyName.liShu:
-        return '隶书';
+extension FontFamilyNameListExt on List<FontFamilyName> {
+  FontFamilyName byValue(String? value) {
+    try {
+      return firstWhere((element) => element.value == value);
+    } catch (_) {
+      return FontFamilyName.none;
     }
   }
 }
