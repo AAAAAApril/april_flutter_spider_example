@@ -4,57 +4,28 @@ import 'package:april/utils/utils.dart';
 import 'package:books/pages/detail.dart';
 import 'package:books/pages/host.dart';
 import 'package:books/pages/reading/reading.dart';
-import 'package:books/viewmodel/detail/detail_viewmodel.dart';
-import 'package:books/viewmodel/reading/reading_viewmodel.dart';
-import 'package:books/viewmodel/search/search_viewmodel.dart';
-import 'package:books/viewmodel/settings/settings_viewmodel.dart';
-import 'package:books/viewmodel/viewmodel.dart';
+import 'package:books/repository/books_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:provider/provider.dart';
 
 import 'generated/l10n.dart';
-import 'viewmodel/settings/enums/font_family_name.dart';
+import 'repository/enums/font_family_name.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  var info = await PackageInfo.fromPlatform();
-
-  runApp(MultiProvider(
-    providers: [
-      ///搜索
-      ChangeNotifierProvider(
-        create: (context) => SearchViewModel(),
-      ),
-
-      ///设置
-      ChangeNotifierProvider(
-        create: (context) => SettingsViewModel(),
-      ),
-    ],
-    builder: (context, child) => MyApp(
-      title: info.appName,
-    ),
-  ));
+void main() {
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({
-    Key? key,
-    required this.title,
-  }) : super(key: key);
-
-  final String title;
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  ///设置
-  late SettingsViewModel settingsViewModel;
+  ///缓存数据源
+  late BookCacheRepository cacheRepository;
 
   ///全局字体样式
   late FontFamilyName globalFontFamily;
@@ -62,28 +33,38 @@ class _MyAppState extends State<MyApp> {
   ///全局主题样式
   late ThemeMode globalThemeMode;
 
+  ///应用标题
+  String title = '';
+
   @override
   void initState() {
     super.initState();
-    settingsViewModel = ViewModel.of<SettingsViewModel>(context);
-    settingsViewModel.globalConfigs.value.let((it) {
+    cacheRepository = BooksRepository.instance.repository.cache;
+    cacheRepository.globalConfigs.value.let((it) {
       globalFontFamily = it.globalFontFamily;
       globalThemeMode = it.themeMode;
     });
-    settingsViewModel.globalConfigs.addListener(onGlobalSettingChanged);
+    cacheRepository.globalConfigs.addListener(onGlobalSettingChanged);
+    //获取应用标题
+    PackageInfo.fromPlatform().then((value) {
+      title = value.appName;
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   @override
   void dispose() {
-    settingsViewModel.globalConfigs.removeListener(onGlobalSettingChanged);
+    cacheRepository.globalConfigs.removeListener(onGlobalSettingChanged);
     super.dispose();
   }
 
   ///全局设置有变化
   void onGlobalSettingChanged() {
     FontFamilyName newFamilyName =
-        settingsViewModel.globalConfigs.value.globalFontFamily;
-    ThemeMode newThemeMode = settingsViewModel.globalConfigs.value.themeMode;
+        cacheRepository.globalConfigs.value.globalFontFamily;
+    ThemeMode newThemeMode = cacheRepository.globalConfigs.value.themeMode;
     if (newFamilyName != globalFontFamily || newThemeMode != globalThemeMode) {
       globalFontFamily = newFamilyName;
       globalThemeMode = newThemeMode;
@@ -94,7 +75,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: widget.title,
+      title: title,
       themeMode: globalThemeMode,
       theme: ThemeData(
         useMaterial3: true,
@@ -161,22 +142,16 @@ class _MyAppState extends State<MyApp> {
           ///详情页
           case 'detail':
             return MaterialPageRoute(
-              builder: (context) => ChangeNotifierProvider(
-                create: (context) => BookDetailViewModel(
-                  settings.arguments as String,
-                ),
-                child: const BookDetailPage(),
+              builder: (context) => BookDetailPage(
+                bookId: settings.arguments as String,
               ),
             );
 
           ///阅读页
           case 'reading':
             return MaterialPageRoute(
-              builder: (context) => ChangeNotifierProvider(
-                create: (context) => ReadingViewModel(
-                  settings.arguments as ReadingArguments,
-                ),
-                child: const ReadingPage(),
+              builder: (context) => ReadingPage(
+                arguments: settings.arguments as ReadingArguments,
               ),
             );
           default:

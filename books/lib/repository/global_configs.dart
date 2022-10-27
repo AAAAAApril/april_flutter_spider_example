@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:april/utils/json.dart';
 import 'package:flutter/material.dart';
 
@@ -40,16 +38,7 @@ class GlobalConfigs {
   ///界面主题样式
   final ThemeMode themeMode;
 
-  factory GlobalConfigs.fromJson(String? jsonString) {
-    if (jsonString == null) {
-      return def;
-    }
-    dynamic map;
-    try {
-      map = jsonDecode(jsonString);
-    } catch (_) {
-      map = null;
-    }
+  factory GlobalConfigs.fromJson(Map<String, dynamic> map) {
     var json = Json(map);
     return GlobalConfigs._(
       readFontSize: json.getInt(
@@ -99,5 +88,7 @@ class GlobalConfigs {
       };
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() {
+    return 'GlobalConfigs{readFontSize: $readFontSize, globalFontFamily: $globalFontFamily, readFontFamily: $readFontFamily, themeMode: $themeMode}';
+  }
 }

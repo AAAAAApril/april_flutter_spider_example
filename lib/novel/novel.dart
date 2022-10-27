@@ -65,8 +65,13 @@ class Novel<N extends NetworkRepository, C extends CacheRepository> {
   }
 
   ///搜索小说
-  Future<List<NovelPreviewBean>> searchNovels(String keywords) =>
-      network.searchNovels(keywords);
+  Future<List<NovelPreviewBean>> searchNovels({
+    required String keywords,
+    FetchStrategy strategy = FetchStrategy.networkFirstOnlyWifi,
+  }) async {
+    //Tips：本地缓存暂未实现
+    return network.searchNovels(keywords);
+  }
 
   ///小说详情
   Future<NovelBean?> novelDetail({

@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () async {
               final Novel novel = Novel.loveReading();
               final List<NovelPreviewBean> novels =
-                  await novel.searchNovels('余火');
+                  await novel.searchNovels(keywords: '余火');
               debugPrint('===== BEGIN ===== 搜索结果');
               for (var element in novels) {
                 debugPrint(element.toString());

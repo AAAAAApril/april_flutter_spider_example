@@ -1,8 +1,7 @@
 import 'package:april/widgets/value_listenable_builder.dart';
 import 'package:books/generated/l10n.dart';
-import 'package:books/viewmodel/detail/detail_viewmodel.dart';
-import 'package:books/viewmodel/reading/reading_viewmodel.dart';
-import 'package:books/viewmodel/viewmodel.dart';
+import 'package:books/pages/reading/reading.dart';
+import 'package:books/repository/books_repository.dart';
 import 'package:books/widget/net_work_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,29 +9,74 @@ import 'package:spider/novel/beans/chapter_bean.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
 
 ///书籍详情页
-class BookDetailPage extends StatelessWidget {
-  const BookDetailPage({Key? key}) : super(key: key);
+class BookDetailPage extends StatefulWidget {
+  const BookDetailPage({
+    Key? key,
+    required this.bookId,
+  }) : super(key: key);
+
+  final String bookId;
+
+  @override
+  State<BookDetailPage> createState() => _BookDetailPageState();
+}
+
+class _BookDetailPageState extends State<BookDetailPage> {
+  ///书籍详情
+  late ValueNotifier<NovelBean?> bookDetail;
+
+  ///所有章节是否倒序显示
+  late ValueNotifier<bool> reverseOrder;
+
+  @override
+  void initState() {
+    super.initState();
+    bookDetail = ValueNotifier<NovelBean?>(null);
+    reverseOrder = ValueNotifier<bool>(true);
+  }
+
+  @override
+  void dispose() {
+    reverseOrder.dispose();
+    bookDetail.dispose();
+    super.dispose();
+  }
+
+  ///刷新书籍详情
+  void refreshBookDetail() async {
+    bookDetail.value = await BooksRepository.instance.repository.novelDetail(
+      novelId: widget.bookId,
+    );
+  }
+
+  ///切换是否倒序
+  void switchReverseOrder(bool reverseOrder) {
+    this.reverseOrder.value = reverseOrder;
+  }
 
   @override
   Widget build(BuildContext context) {
-    var viewModel = ViewModel.of<BookDetailViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: SelectorListenableBuilder<NovelBean?, String>(
-          valueListenable: viewModel.bookDetail,
+          valueListenable: bookDetail,
           selector: (value) => value?.novelName ?? '',
           builder: (_, bookName, __) => Text(bookName),
         ),
         actions: [
-          //添加到书架按钮
+          ///添加到书架按钮
           IconButton(
-            onPressed: viewModel.add2Favorite,
+            onPressed: () async {
+              if (await BooksRepository.instance.add2Favorite(widget.bookId)) {
+                refreshBookDetail();
+              }
+            },
             icon: const Icon(Icons.favorite_rounded),
           ),
         ],
       ),
       body: ValueListenableBuilder<NovelBean?>(
-        valueListenable: viewModel.bookDetail,
+        valueListenable: bookDetail,
         builder: (_, value, __) {
           if (value == null) {
             return const Center(
@@ -78,26 +122,31 @@ class BookDetailPage extends StatelessWidget {
                       color: Colors.blue,
                     ),
                   ),
+
+                  ///切换正序、倒序
                   ValueListenableBuilder<bool>(
-                    valueListenable: viewModel.reverseOrder,
+                    valueListenable: reverseOrder,
                     builder: (_, value, __) => Checkbox(
                       value: value,
                       onChanged: (newValue) {
-                        viewModel.switchReverseOrder(newValue == true);
+                        switchReverseOrder(newValue == true);
                       },
                     ),
                   ),
                 ]),
               ),
               SelectorListenableBuilder<bool, List<ChapterPreviewBean>>(
-                valueListenable: viewModel.reverseOrder,
+                valueListenable: reverseOrder,
                 selector: (reverse) {
                   if (reverse) {
                     return List.of(value.chapters).reversed.toList();
                   }
                   return value.chapters;
                 },
-                builder: (_, value, __) => _Chapters(chapters: value),
+                builder: (_, value, __) => _Chapters(
+                  bookId: widget.bookId,
+                  chapters: value,
+                ),
               ),
             ]),
           );
@@ -167,9 +216,11 @@ class _Info extends StatelessWidget {
 class _Chapters extends StatelessWidget {
   const _Chapters({
     Key? key,
+    required this.bookId,
     required this.chapters,
   }) : super(key: key);
 
+  final String bookId;
   final List<ChapterPreviewBean> chapters;
 
   @override
@@ -186,7 +237,7 @@ class _Chapters extends StatelessWidget {
                 context,
                 'reading',
                 arguments: ReadingArguments(
-                  ViewModel.of<BookDetailViewModel>(context).bookId,
+                  bookId,
                   chapter.chapterId,
                 ),
               );

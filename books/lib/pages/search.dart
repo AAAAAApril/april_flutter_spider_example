@@ -1,8 +1,8 @@
 import 'package:april/utils/extensions.dart';
 import 'package:april/widgets/value_listenable_builder.dart';
 import 'package:books/generated/l10n.dart';
-import 'package:books/viewmodel/search/search_viewmodel.dart';
-import 'package:books/viewmodel/viewmodel.dart';
+import 'package:books/repository/books_repository.dart';
+import 'package:books/repository/search_refreshable.dart';
 import 'package:books/widget/net_work_image.dart';
 import 'package:flutter/material.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
@@ -13,17 +13,18 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var viewModel = ViewModel.of<SearchViewModel>(context);
+    final SearchRefreshableController searchController =
+        BooksRepository.instance.searchController;
     return Column(children: [
       Material(
         elevation: 2,
         child: Row(children: [
           Expanded(
             child: TextFormField(
-              controller: viewModel.editingController,
+              controller: searchController.editingController,
               maxLines: 1,
               textInputAction: TextInputAction.search,
-              onEditingComplete: viewModel.doSearch,
+              onEditingComplete: searchController.search,
               decoration: InputDecoration(
                 isCollapsed: true,
                 contentPadding: const EdgeInsets.symmetric(
@@ -38,7 +39,7 @@ class SearchPage extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(48)),
                 ),
                 suffixIcon: SelectorListenableBuilder<TextEditingValue, bool>(
-                  valueListenable: viewModel.editingController,
+                  valueListenable: searchController.editingController,
                   selector: (value) => value.text.isNotEmpty,
                   builder: (context, value, child) {
                     if (!value) {
@@ -46,7 +47,7 @@ class SearchPage extends StatelessWidget {
                     }
                     return IconButton(
                       icon: const Icon(Icons.clear_rounded),
-                      onPressed: viewModel.clearInput,
+                      onPressed: searchController.clearKeywords,
                     );
                   },
                 ),
@@ -55,15 +56,15 @@ class SearchPage extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.search_rounded),
-            onPressed: viewModel.doSearch,
+            onPressed: searchController.search,
           ),
         ]),
       ),
       Expanded(
         child: ValueListenableBuilder<bool>(
-          valueListenable: viewModel.isRefreshing,
+          valueListenable: searchController.isRefreshing,
           child: ValueListenableBuilder<List<NovelPreviewBean>>(
-            valueListenable: viewModel.searchResult,
+            valueListenable: searchController.data,
             builder: (_, value, __) => ListView.separated(
               itemCount: value.length,
               separatorBuilder: (_, __) => const Divider(),

@@ -1,12 +1,13 @@
-import 'package:april/widgets/value_listenable_builder.dart';
-import 'package:books/generated/l10n.dart';
-import 'package:books/viewmodel/settings/enums/font_family_name.dart';
-import 'package:books/viewmodel/settings/enums/theme_mode.dart';
-import 'package:books/viewmodel/settings/global_configs.dart';
-import 'package:books/viewmodel/settings/settings_viewmodel.dart';
-import 'package:books/viewmodel/viewmodel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:april/widgets/value_listenable_builder.dart';
+
+import 'package:books/generated/l10n.dart';
+import 'package:books/repository/books_repository.dart';
+import 'package:books/repository/global_configs.dart';
+import 'package:books/repository/enums/font_family_name.dart';
+import 'package:books/repository/enums/theme_mode.dart';
 
 ///设置页
 class SettingsPage extends StatelessWidget {
@@ -14,24 +15,25 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingViewModel = ViewModel.of<SettingsViewModel>(context);
+    final BookCacheRepository cacheRepository =
+        BooksRepository.instance.repository.cache;
     return ListView(children: [
       ///全局主题颜色
       _SwitchableConfigs<GlobalConfigs, ThemeMode>(
         title: Strings.current.globalThemeMode,
-        listenable: settingViewModel.globalConfigs,
+        listenable: cacheRepository.globalConfigs,
         configs: ThemeMode.values,
         selector: (configs, mode) => configs.themeMode == mode,
         itemBuilder: (_, mode) => Text(mode.modeName),
         onSelect: (mode) {
-          settingViewModel.changeGlobalThemeMode(mode);
+          cacheRepository.changeGlobalThemeMode(mode);
         },
       ),
 
       ///全局字体样式
       _SwitchableConfigs<GlobalConfigs, FontFamilyName>(
         title: Strings.current.globalFontFamily,
-        listenable: settingViewModel.globalConfigs,
+        listenable: cacheRepository.globalConfigs,
         configs: FontFamilyName.values,
         selector: (configs, name) => configs.globalFontFamily == name,
         itemBuilder: (_, familyName) => Text(
@@ -39,7 +41,7 @@ class SettingsPage extends StatelessWidget {
           style: TextStyle(fontFamily: familyName.value),
         ),
         onSelect: (familyName) {
-          settingViewModel.changeGlobalFontFamily(familyName);
+          cacheRepository.changeGlobalFontFamily(familyName);
         },
       ),
     ]);
