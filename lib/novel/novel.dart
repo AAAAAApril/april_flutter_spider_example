@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:spider/novel/beans/read_bean.dart';
 import 'package:spider/novel/love_reading/repository/cache.dart';
 import 'package:spider/novel/love_reading/repository/network.dart';
 
@@ -63,6 +64,20 @@ class Novel<N extends NetworkRepository, C extends CacheRepository> {
     }
     return novels;
   }
+
+  ///当前阅读到的位置
+  Future<ReadBean> currentReadChapter(String novelId) =>
+      cache.currentReadChapter(novelId);
+
+  ///更新当前的阅读位置
+  Future<void> notifyCurrentReadChapter({
+    required String novelId,
+    required ReadBean read,
+  }) =>
+      cache.notifyCurrentReadChapter(
+        novelId: novelId,
+        read: read,
+      );
 
   ///搜索小说
   Future<List<NovelPreviewBean>> searchNovels({
