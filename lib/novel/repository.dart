@@ -90,10 +90,7 @@ class CacheRepository extends NetworkRepository {
         ),
       );
     } catch (_) {
-      return const ReadBean(
-        chapterId: '',
-        paragraphIndex: 0,
-      );
+      return const ReadBean.start();
     }
   }
 

@@ -1,18 +1,19 @@
+import 'package:books/repository/books_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:spider/novel/beans/read_bean.dart';
 
 ///阅读页传参
 class ReadingArguments {
   const ReadingArguments(
     this.bookId, {
-    this.chapterId,
+    this.readLocation = const ReadBean.start(),
   });
 
   ///书籍 id
   final String bookId;
 
-  ///想要直接阅读的章节 id
-  ///如果这个值为 null，表示不直接阅读某个章节
-  final String? chapterId;
+  ///当前阅读位置
+  final ReadBean readLocation;
 }
 
 ///阅读页
@@ -29,14 +30,14 @@ class ReadingPage extends StatefulWidget {
 }
 
 class _ReadingPageState extends State<ReadingPage> {
-  ///当前正在显示的章节
-  String? currentChapterId;
+  ///当前阅读位置
+  late ReadBean currentReadLocation;
 
   @override
   void initState() {
     super.initState();
-    currentChapterId = widget.arguments.chapterId;
-    if (currentChapterId == null) {
+    currentReadLocation = widget.arguments.readLocation;
+    if (currentReadLocation.atStart) {
       checkCurrentReadingChapter();
     }
   }
@@ -46,9 +47,15 @@ class _ReadingPageState extends State<ReadingPage> {
     super.dispose();
   }
 
-  ///TODO 从缓存中获取当前已经阅读到的章节
-  void checkCurrentReadingChapter() {
-    // currentChapterId=;
+  /// 从缓存中获取当前已经阅读到的章节
+  void checkCurrentReadingChapter() async {
+    currentReadLocation =
+        await BooksRepository.instance.repository.currentReadChapter(
+      widget.arguments.bookId,
+    );
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override

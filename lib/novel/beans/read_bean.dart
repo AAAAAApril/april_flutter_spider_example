@@ -4,8 +4,10 @@ import 'package:april/utils/json.dart';
 class ReadBean {
   const ReadBean({
     required this.chapterId,
-    required this.paragraphIndex,
+    this.paragraphIndex = 0,
   });
+
+  const ReadBean.start() : this(chapterId: '');
 
   factory ReadBean.fromJson(Map<String, dynamic> map) {
     final json = Json(map);
@@ -20,6 +22,9 @@ class ReadBean {
 
   ///当前阅读到的段落下标
   final int paragraphIndex;
+
+  ///是否是在最开始（即：还未阅读过）
+  bool get atStart => chapterId.isEmpty && paragraphIndex <= 0;
 
   Map<String, dynamic> toJson() => {
         'chapterId': chapterId,

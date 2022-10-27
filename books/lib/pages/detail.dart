@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:spider/novel/beans/chapter_bean.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
+import 'package:spider/novel/beans/read_bean.dart';
 
 ///书籍详情页
 class BookDetailPage extends StatefulWidget {
@@ -217,7 +218,9 @@ class _Info extends StatelessWidget {
                           'reading',
                           arguments: ReadingArguments(
                             bean.novelId,
-                            chapterId: bean.lastChapter.chapterId,
+                            readLocation: ReadBean(
+                              chapterId: bean.lastChapter.chapterId,
+                            ),
                           ),
                         );
                       },
@@ -257,7 +260,9 @@ class _Chapters extends StatelessWidget {
                 'reading',
                 arguments: ReadingArguments(
                   bookId,
-                  chapterId: chapter.chapterId,
+                  readLocation: ReadBean(
+                    chapterId: chapter.chapterId,
+                  ),
                 ),
               );
             },
