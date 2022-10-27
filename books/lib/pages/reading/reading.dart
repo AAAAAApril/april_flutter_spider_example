@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 ///阅读页传参
 class ReadingArguments {
   const ReadingArguments(
-    this.bookId, [
+    this.bookId, {
     this.chapterId,
-  ]);
+  });
 
   ///书籍 id
   final String bookId;
@@ -29,14 +29,26 @@ class ReadingPage extends StatefulWidget {
 }
 
 class _ReadingPageState extends State<ReadingPage> {
+  ///当前正在显示的章节
+  String? currentChapterId;
+
   @override
   void initState() {
     super.initState();
+    currentChapterId = widget.arguments.chapterId;
+    if (currentChapterId == null) {
+      checkCurrentReadingChapter();
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  ///TODO 从缓存中获取当前已经阅读到的章节
+  void checkCurrentReadingChapter() {
+    // currentChapterId=;
   }
 
   @override

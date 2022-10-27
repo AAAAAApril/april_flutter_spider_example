@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         brightness: Brightness.light,
         primarySwatch: Colors.grey,
-        fontFamily: globalFontFamily.name,
+        fontFamily: globalFontFamily.value,
         appBarTheme: const AppBarTheme(centerTitle: true),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
@@ -94,7 +94,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         brightness: Brightness.dark,
         primarySwatch: Colors.grey,
-        fontFamily: globalFontFamily.name,
+        fontFamily: globalFontFamily.value,
         appBarTheme: const AppBarTheme(centerTitle: true),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           landscapeLayout: BottomNavigationBarLandscapeLayout.linear,

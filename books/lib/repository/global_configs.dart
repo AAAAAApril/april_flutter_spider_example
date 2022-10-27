@@ -48,13 +48,13 @@ class GlobalConfigs {
       globalFontFamily: FontFamilyName.values.byValue(
         json.getString(
           'globalFontFamily',
-          def.globalFontFamily.name,
+          def.globalFontFamily.value,
         ),
       ),
       readFontFamily: FontFamilyName.values.byValue(
         json.getString(
           'readFontFamily',
-          def.readFontFamily.name,
+          def.readFontFamily.value,
         ),
       ),
       themeMode: ThemeMode.values.byName(
@@ -82,8 +82,8 @@ class GlobalConfigs {
 
   Map<String, dynamic> toJson() => {
         'readFontSize': readFontSize,
-        'globalFontFamily': globalFontFamily.name,
-        'readFontFamily': readFontFamily.name,
+        'globalFontFamily': globalFontFamily.value,
+        'readFontFamily': readFontFamily.value,
         'themeMode': themeMode.name,
       };
 

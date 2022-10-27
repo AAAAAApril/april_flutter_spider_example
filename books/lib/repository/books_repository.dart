@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:books/repository/search_refreshable.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
+import 'package:spider/novel/fetch_strategy.dart';
 import 'package:spider/novel/love_reading/repository/cache.dart';
 import 'package:spider/novel/love_reading/repository/network.dart';
 import 'package:spider/novel/novel.dart';
@@ -41,7 +42,10 @@ class BooksRepository {
 
   /// 添加书籍到书架
   Future<bool> add2Favorite(String bookId) async {
-    if (await repository.addFavorite(novelId: bookId)) {
+    if (await repository.addFavorite(
+      novelId: bookId,
+      strategy: FetchStrategy.cacheFirst,
+    )) {
       _refreshFavorites();
       return true;
     }
@@ -49,10 +53,12 @@ class BooksRepository {
   }
 
   /// 从书架移除书籍
-  void removeFromFavorites(String bookId) async {
+  Future<bool> removeFromFavorites(String bookId) async {
     if (await repository.removeFavorite(bookId)) {
       _refreshFavorites();
+      return true;
     }
+    return false;
   }
 
   ///刷新全部收藏

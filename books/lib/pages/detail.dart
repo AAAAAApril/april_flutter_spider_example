@@ -33,6 +33,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
     super.initState();
     bookDetail = ValueNotifier<NovelBean?>(null);
     reverseOrder = ValueNotifier<bool>(true);
+    refreshBookDetail();
   }
 
   @override
@@ -65,14 +66,32 @@ class _BookDetailPageState extends State<BookDetailPage> {
         ),
         actions: [
           ///添加到书架按钮
-          IconButton(
-            onPressed: () async {
-              if (await BooksRepository.instance.add2Favorite(widget.bookId)) {
-                refreshBookDetail();
+          SelectorListenableBuilder<List<NovelBean>, bool>(
+            valueListenable: BooksRepository.instance.allFavorites,
+            selector: (value) {
+              try {
+                value.firstWhere((element) => element.novelId == widget.bookId);
+                return true;
+              } catch (_) {
+                return false;
               }
             },
-            icon: const Icon(Icons.favorite_rounded),
+            builder: (context, favorite, child) => IconButton(
+              onPressed: () {
+                //已经是收藏了
+                if (favorite) {
+                  BooksRepository.instance.removeFromFavorites(widget.bookId);
+                }
+                //还不是收藏
+                else {
+                  BooksRepository.instance.add2Favorite(widget.bookId);
+                }
+              },
+              color: favorite ? Colors.pinkAccent : Colors.grey,
+              icon: const Icon(Icons.favorite_rounded),
+            ),
           ),
+          const SizedBox(width: 8),
         ],
       ),
       body: ValueListenableBuilder<NovelBean?>(
@@ -198,7 +217,7 @@ class _Info extends StatelessWidget {
                           'reading',
                           arguments: ReadingArguments(
                             bean.novelId,
-                            bean.lastChapter.chapterId,
+                            chapterId: bean.lastChapter.chapterId,
                           ),
                         );
                       },
@@ -238,7 +257,7 @@ class _Chapters extends StatelessWidget {
                 'reading',
                 arguments: ReadingArguments(
                   bookId,
-                  chapter.chapterId,
+                  chapterId: chapter.chapterId,
                 ),
               );
             },

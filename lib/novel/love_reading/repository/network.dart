@@ -131,9 +131,11 @@ Future<NovelBean?> _novelDetail(_NovelDetailRequestConfig config) async {
         .nonnullElementAttributeValue(
           'head > meta[property="og:description"]',
           attributeKey: 'content',
+          needTrim: false,
         )
         .replaceFirst('简介：', '')
-        .split('<br />\n')
+        .replaceAll('<br/>', '\n')
+        .split('\n')
       ..removeWhere((element) {
         element.trim();
         return element.isEmpty;
