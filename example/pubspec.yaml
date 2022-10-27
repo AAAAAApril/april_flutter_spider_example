@@ -30,6 +30,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # https://pub.flutter-io.cn/packages/better_player
+  better_player: 0.0.83
+
   spider:
     path: ../
 

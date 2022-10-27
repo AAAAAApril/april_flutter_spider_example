@@ -1,3 +1,4 @@
+import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:spider/novel/beans/chapter_bean.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
@@ -41,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: SingleChildScrollView(
-        child: Wrap(children: <Widget>[
+        child: Column(children: <Widget>[
           ElevatedButton(
             child: const Text('测试爱读书网，获取章节所有段落'),
             onPressed: () async {
@@ -103,6 +104,16 @@ class _MyHomePageState extends State<MyHomePage> {
               }
               debugPrint('====== END ====== 搜索结果');
             },
+          ),
+
+          ///测试播放 m3u8 格式视频
+          BetterPlayer.network(
+            //动漫《诛仙2022》第一季第一集
+            'https://new.qqaku.com/20220802/KxFutGmf/index.m3u8',
+            betterPlayerConfiguration: const BetterPlayerConfiguration(
+              aspectRatio: 16 / 9,
+              fit: BoxFit.contain,
+            ),
           ),
         ]),
       ),
