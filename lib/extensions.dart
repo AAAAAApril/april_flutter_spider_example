@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart';
 
 import 'log.dart';
@@ -107,7 +108,7 @@ extension DocumentExt on Document {
 extension FutureExt<T> on Future<T> {
   ///打印请求时间
   Future<T> printRequestTime(String requestTag) {
-    if (!Log.isDebug) {
+    if (!kDebugMode) {
       return this;
     }
     var start = DateTime.now();

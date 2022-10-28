@@ -49,18 +49,18 @@ class _MyHomePageState extends State<MyHomePage> {
               final Novel novel = Novel.loveReading();
               const ChapterPreviewBean chapter = ChapterPreviewBean(
                 chapterId: '1',
-                chapterName: '第一章 绯红',
+                chapterName: '第一章 那天，起了很大的雾',
               );
               final List<String> paragraphs = await novel.fetchParagraphs(
                 strategy: FetchStrategy.networkFirst,
-                novelId: '1133',
+                novelId: '267237',
                 chapter: chapter,
               );
-              debugPrint('===== BEGIN ===== 诡秘之主 ${chapter.chapterName}');
+              debugPrint('===== BEGIN ===== 深海余烬 ${chapter.chapterName}');
               for (var element in paragraphs) {
                 debugPrint(element);
               }
-              debugPrint('====== END ====== 诡秘之主 ${chapter.chapterName}');
+              debugPrint('====== END ====== 深海余烬 ${chapter.chapterName}');
             },
           ),
           ElevatedButton(
@@ -107,14 +107,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
 
           ///测试播放 m3u8 格式视频
-          BetterPlayer.network(
-            //动漫《诛仙2022》第一季第一集
-            'https://new.qqaku.com/20220802/KxFutGmf/index.m3u8',
-            betterPlayerConfiguration: const BetterPlayerConfiguration(
-              aspectRatio: 16 / 9,
-              fit: BoxFit.contain,
-            ),
-          ),
+          // BetterPlayer.network(
+          //   //动漫《诛仙2022》第一季第一集
+          //   'https://new.qqaku.com/20220802/KxFutGmf/index.m3u8',
+          //   betterPlayerConfiguration: const BetterPlayerConfiguration(
+          //     aspectRatio: 16 / 9,
+          //     fit: BoxFit.contain,
+          //   ),
+          // ),
         ]),
       ),
     );

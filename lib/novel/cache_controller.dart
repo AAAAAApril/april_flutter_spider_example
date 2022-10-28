@@ -164,8 +164,8 @@ class CacheFileController {
   }
 
   ///书籍章节的段落详情缓存文件运行时缓存
-  final Map<Directory, File> _bookChapterParagraphsCacheFile =
-      <Directory, File>{};
+  final Map<Directory, Map<String, File>> _bookChapterParagraphsCacheFile =
+      <Directory, Map<String, File>>{};
 
   ///书籍章节段落缓存文件
   Future<File> getBookChapterParagraphsCacheFile({
@@ -173,17 +173,23 @@ class CacheFileController {
     required String chapterId,
   }) async {
     Directory chaptersDir = await getBookChaptersCacheDir(bookId);
-    File? chapter = _bookChapterParagraphsCacheFile[chaptersDir];
-    if (chapter == null) {
-      chapter = File(path.join(
+    Map<String, File>? chaptersMap =
+        _bookChapterParagraphsCacheFile[chaptersDir];
+    chaptersMap ??= <String, File>{};
+
+    File? paragraphFile = chaptersMap[chapterId];
+    if (paragraphFile == null) {
+      paragraphFile = File(path.join(
         chaptersDir.absolute.path,
         '$chapterId.txt',
       ));
-      if (!(await chapter.exists())) {
-        chapter = await chapter.create(recursive: true);
+      if (!(await paragraphFile.exists())) {
+        paragraphFile = await paragraphFile.create(recursive: true);
       }
-      _bookChapterParagraphsCacheFile[chaptersDir] = chapter;
+      chaptersMap[chapterId] = paragraphFile;
     }
-    return chapter;
+
+    _bookChapterParagraphsCacheFile[chaptersDir] = chaptersMap;
+    return paragraphFile;
   }
 }

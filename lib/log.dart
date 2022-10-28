@@ -6,21 +6,13 @@ import 'package:flutter/foundation.dart';
 class Log {
   Log._();
 
-  static late final bool isDebug = () {
-    var result = false;
-    assert(() {
-      result = true;
-      return true;
-    }());
-    return result;
-  }();
-
   ///打印普通日志
-  static void print({
+  static bool print({
     ValueGetter<Object?>? value,
     String? tag,
   }) {
     _longPrint(value?.call(), tag: tag);
+    return true;
   }
 }
 

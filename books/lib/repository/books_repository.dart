@@ -20,7 +20,7 @@ class BooksRepository {
 
   BooksRepository._() {
     //查询所有收藏的书籍
-    _refreshFavorites();
+    refreshFavorites();
   }
 
   ///小说数据源
@@ -46,7 +46,7 @@ class BooksRepository {
       novelId: bookId,
       strategy: FetchStrategy.cacheFirst,
     )) {
-      _refreshFavorites();
+      refreshFavorites();
       return true;
     }
     return false;
@@ -55,14 +55,14 @@ class BooksRepository {
   /// 从书架移除书籍
   Future<bool> removeFromFavorites(String bookId) async {
     if (await repository.removeFavorite(bookId)) {
-      _refreshFavorites();
+      refreshFavorites();
       return true;
     }
     return false;
   }
 
   ///刷新全部收藏
-  Future<void> _refreshFavorites() async {
+  Future<void> refreshFavorites() async {
     var result = await repository.allFavorites();
     _allFavorites.value = result;
   }

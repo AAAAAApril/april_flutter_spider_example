@@ -6,6 +6,7 @@ import 'package:books/pages/host.dart';
 import 'package:books/pages/reading/reading.dart';
 import 'package:books/repository/books_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -13,7 +14,27 @@ import 'generated/l10n.dart';
 import 'repository/enums/font_family_name.dart';
 
 void main() {
+  ///加载界面
   runApp(const MyApp());
+
+  ///锁定竖屏
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  ///默认非全屏
+  exitFullScreen();
+}
+
+///进入全屏
+void enterFullScreen() {
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+}
+
+///退出全屏
+void exitFullScreen() {
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: SystemUiOverlay.values,
+  );
 }
 
 class MyApp extends StatefulWidget {

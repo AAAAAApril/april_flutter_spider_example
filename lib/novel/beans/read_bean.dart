@@ -26,8 +26,34 @@ class ReadBean {
   ///是否是在最开始（即：还未阅读过）
   bool get atStart => chapterId.isEmpty && paragraphIndex <= 0;
 
+  ReadBean copy({
+    String? chapterId,
+    int? paragraphIndex,
+  }) {
+    return ReadBean(
+      chapterId: chapterId ?? this.chapterId,
+      paragraphIndex: paragraphIndex ?? this.paragraphIndex,
+    );
+  }
+
   Map<String, dynamic> toJson() => {
         'chapterId': chapterId,
         'paragraphIndex': paragraphIndex,
       };
+
+  @override
+  String toString() {
+    return 'ReadBean{chapterId: $chapterId, paragraphIndex: $paragraphIndex}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReadBean &&
+          runtimeType == other.runtimeType &&
+          chapterId == other.chapterId &&
+          paragraphIndex == other.paragraphIndex;
+
+  @override
+  int get hashCode => chapterId.hashCode ^ paragraphIndex.hashCode;
 }

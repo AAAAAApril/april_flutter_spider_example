@@ -91,4 +91,21 @@ class GlobalConfigs {
   String toString() {
     return 'GlobalConfigs{readFontSize: $readFontSize, globalFontFamily: $globalFontFamily, readFontFamily: $readFontFamily, themeMode: $themeMode}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GlobalConfigs &&
+          runtimeType == other.runtimeType &&
+          readFontSize == other.readFontSize &&
+          globalFontFamily == other.globalFontFamily &&
+          readFontFamily == other.readFontFamily &&
+          themeMode == other.themeMode;
+
+  @override
+  int get hashCode =>
+      readFontSize.hashCode ^
+      globalFontFamily.hashCode ^
+      readFontFamily.hashCode ^
+      themeMode.hashCode;
 }

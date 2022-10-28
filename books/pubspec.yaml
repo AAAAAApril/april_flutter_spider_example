@@ -38,6 +38,8 @@ dependencies:
   package_info_plus: ^3.0.0
   # 地址：https://pub.flutter-io.cn/packages/cached_network_image
   cached_network_image: ^3.2.2
+  # 地址：https://pub.flutter-io.cn/packages/scrollable_positioned_list
+  scrollable_positioned_list: ^0.3.5
 
   spider:
     path: ../
