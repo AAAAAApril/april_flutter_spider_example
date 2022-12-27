@@ -1,8 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:april/data/refreshable_controller.dart';
-import 'package:april/data/refreshable_data_wrapper.dart';
-import 'package:april/utils/utils.dart';
+import 'package:april_flutter_utils/april.dart';
 
 import 'package:spider/novel/beans/novel_bean.dart';
 import 'package:spider/novel/love_reading/repository/network.dart';
@@ -38,8 +36,8 @@ class SearchRefreshableController extends AbsRefreshableController<
     _keywords = editingController.text.trim();
     if (_keywords.isNotEmpty) {
       //隐藏输入法，并清空焦点
-      hideInputMethod();
-      clearFocus();
+      April.hideInputMethod();
+      April.clearFocus();
     }
     return refresh();
   }

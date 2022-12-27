@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:april/utils/json.dart';
+import 'package:april_flutter_utils/april.dart';
 
 ///动态作者
 class DynamicAuthor {

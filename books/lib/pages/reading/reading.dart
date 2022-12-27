@@ -2,7 +2,7 @@ import 'package:books/pages/reading/chapters.dart';
 import 'package:books/repository/global_configs.dart';
 import 'package:flutter/material.dart';
 
-import 'package:april/widgets/value_listenable_builder.dart';
+import 'package:april_flutter_utils/april.dart';
 import 'package:spider/log.dart';
 import 'package:spider/novel/beans/chapter_bean.dart';
 

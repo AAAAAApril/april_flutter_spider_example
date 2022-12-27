@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:april/utils/json.dart';
+import 'package:april_flutter_utils/april.dart';
 import 'package:spider/platform/bilibili/bean/dynamic/dynamic_author.dart';
 import 'package:spider/platform/bilibili/bean/dynamic/dynamic_content.dart';
 

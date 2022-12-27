@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:april/utils/json.dart';
+import 'package:april_flutter_utils/april.dart';
 
 import 'dynamic_content_type.dart';
 
@@ -203,7 +203,7 @@ class DynamicVideo {
     Duration duration = Duration.zero;
     try {
       List<String> durationTextList =
-          json.getString('duration_text', '0').split(':');
+          json.getString('duration_text', defaultValue: '0').split(':');
       //只有秒钟
       if (durationTextList.length == 1) {
         duration = Duration(

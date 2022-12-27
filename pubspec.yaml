@@ -25,10 +25,10 @@ dependencies:
   path_provider: ^2.0.11
 
   # a base support package
-  april:
+  april_flutter_utils:
     git:
       url: git@github.com:AAAAAApril/flutter_develop_support.git
-      ref: version-1.9.1
+      ref: pub-v0.0.2
 
 dev_dependencies:
   flutter_test:

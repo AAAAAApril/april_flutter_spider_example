@@ -1,4 +1,4 @@
-import 'package:april/utils/json.dart';
+import 'package:april_flutter_utils/april.dart';
 import 'package:flutter/material.dart';
 
 import 'enums/font_family_name.dart';
@@ -43,24 +43,24 @@ class GlobalConfigs {
     return GlobalConfigs._(
       readFontSize: json.getInt(
         'readFontSize',
-        def.readFontSize,
+        defaultValue: def.readFontSize,
       ),
       globalFontFamily: FontFamilyName.values.byValue(
         json.getString(
           'globalFontFamily',
-          def.globalFontFamily.value,
+          defaultValue: def.globalFontFamily.value,
         ),
       ),
       readFontFamily: FontFamilyName.values.byValue(
         json.getString(
           'readFontFamily',
-          def.readFontFamily.value,
+          defaultValue: def.readFontFamily.value,
         ),
       ),
       themeMode: ThemeMode.values.byName(
         json.getString(
           'themeMode',
-          def.themeMode.name,
+          defaultValue: def.themeMode.name,
         ),
       ),
     );

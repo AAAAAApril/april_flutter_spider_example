@@ -1,6 +1,4 @@
-import 'package:april/april.dart';
-import 'package:april/utils/extensions.dart';
-import 'package:april/utils/utils.dart';
+import 'package:april_flutter_utils/april.dart';
 import 'package:books/pages/detail.dart';
 import 'package:books/pages/host.dart';
 import 'package:books/pages/reading/reading.dart';
@@ -136,9 +134,9 @@ class _MyAppState extends State<MyApp> {
           if (!currentFocus.hasPrimaryFocus &&
               currentFocus.focusedChild != null) {
             //取消焦点
-            clearFocus();
+            April.clearFocus();
             //隐藏输入法
-            hideInputMethod();
+            April.hideInputMethod();
           }
         },
         child: child,
@@ -153,7 +151,7 @@ class _MyAppState extends State<MyApp> {
               builder: (context) => WillPopScope(
                 onWillPop: () async {
                   ///回退到桌面
-                  April.backToDesktop();
+                  AprilMethod.backToDesktop();
                   return false;
                 },
                 child: const HostPage(),

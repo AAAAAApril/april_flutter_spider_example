@@ -4,7 +4,7 @@ import 'package:books/widget/net_work_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
-import 'package:april/utils/extensions.dart';
+import 'package:april_flutter_utils/april.dart';
 import 'package:spider/novel/beans/read_bean.dart';
 
 import 'reading/reading.dart';

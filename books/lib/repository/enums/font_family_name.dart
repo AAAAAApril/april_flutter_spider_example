@@ -24,16 +24,16 @@ enum FontFamilyName {
   );
 
   const FontFamilyName({
-    this.value,
+    this.value = '',
     required this.text,
   });
 
-  final String? value;
+  final String value;
   final String text;
 }
 
 extension FontFamilyNameListExt on List<FontFamilyName> {
-  FontFamilyName byValue(String? value) {
+  FontFamilyName byValue(String value) {
     try {
       return firstWhere((element) => element.value == value);
     } catch (_) {

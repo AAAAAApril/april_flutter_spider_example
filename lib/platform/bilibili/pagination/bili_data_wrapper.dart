@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:april/data/pagination_data_wrapper.dart';
+import 'package:april_flutter_utils/april.dart';
 
 ///分页数据包装器
 class BiliPaginationDataWrapper<T> extends AbsPaginationDataWrapper<T> {

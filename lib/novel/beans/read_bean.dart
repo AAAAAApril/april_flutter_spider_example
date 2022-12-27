@@ -1,4 +1,4 @@
-import 'package:april/utils/json.dart';
+import 'package:april_flutter_utils/april.dart';
 
 ///阅读 缓存 实体
 class ReadBean {

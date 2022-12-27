@@ -1,4 +1,4 @@
-import 'package:april/data/pagination_controller.dart';
+import 'package:april_flutter_utils/april.dart';
 import 'package:spider/platform/bilibili/pagination/bili_data_wrapper.dart';
 
 ///分页列控制器

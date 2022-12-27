@@ -1,4 +1,4 @@
-import 'package:april/utils/json.dart';
+import 'package:april_flutter_utils/april.dart';
 
 ///章节实体（简略）
 class ChapterPreviewBean {

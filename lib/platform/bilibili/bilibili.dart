@@ -1,4 +1,4 @@
-import 'package:april/utils/json.dart';
+import 'package:april_flutter_utils/april.dart';
 import 'package:flutter/foundation.dart';
 import 'package:spider/configs.dart';
 import 'package:spider/extensions.dart';
