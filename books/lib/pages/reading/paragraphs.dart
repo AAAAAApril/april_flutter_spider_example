@@ -1,9 +1,12 @@
-import 'package:books/repository/books_repository.dart';
 import 'package:flutter/material.dart';
+
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
 import 'package:spider/novel/beans/chapter_bean.dart';
 import 'package:spider/novel/beans/read_bean.dart';
-import 'package:spider/novel/fetch_strategy.dart';
+import 'package:spider/fetch_strategy.dart';
+
+import 'package:books/repository/books_repository.dart';
 
 ///阅读的段落列表
 class ReadingParagraphs extends StatefulWidget {

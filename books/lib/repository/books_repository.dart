@@ -5,12 +5,13 @@ import 'package:path/path.dart' as path;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:books/repository/search_refreshable.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
-import 'package:spider/novel/fetch_strategy.dart';
 import 'package:spider/novel/love_reading/repository/cache.dart';
 import 'package:spider/novel/love_reading/repository/network.dart';
 import 'package:spider/novel/novel.dart';
+import 'package:spider/fetch_strategy.dart';
+
+import 'package:books/repository/search_refreshable.dart';
 
 import 'enums/font_family_name.dart';
 import 'global_configs.dart';

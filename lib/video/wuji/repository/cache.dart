@@ -1,4 +1,4 @@
-import 'package:spider/movie/repository.dart';
+import 'package:spider/video/repository.dart';
 
 ///TODO 无极电影网 缓存源
 class WuJiCacheRepository extends CacheRepository {

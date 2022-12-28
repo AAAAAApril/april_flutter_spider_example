@@ -1,8 +1,7 @@
-import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
+import 'package:spider/fetch_strategy.dart';
 import 'package:spider/novel/beans/chapter_bean.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
-import 'package:spider/novel/fetch_strategy.dart';
 import 'package:spider/novel/novel.dart';
 
 void main() {

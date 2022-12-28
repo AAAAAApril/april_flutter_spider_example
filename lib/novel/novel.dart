@@ -1,11 +1,12 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+
+import 'package:spider/fetch_strategy.dart';
 import 'package:spider/novel/beans/read_bean.dart';
 import 'package:spider/novel/love_reading/repository/cache.dart';
 import 'package:spider/novel/love_reading/repository/network.dart';
 
 import 'beans/chapter_bean.dart';
 import 'beans/novel_bean.dart';
-import 'fetch_strategy.dart';
 import 'repository.dart';
 
 ///小说接口抽象类

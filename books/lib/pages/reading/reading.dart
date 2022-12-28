@@ -1,15 +1,15 @@
-import 'package:books/pages/reading/chapters.dart';
-import 'package:books/repository/global_configs.dart';
 import 'package:flutter/material.dart';
 
 import 'package:april_flutter_utils/april.dart';
-import 'package:spider/log.dart';
-import 'package:spider/novel/beans/chapter_bean.dart';
 
+import 'package:spider/log.dart';
+import 'package:spider/fetch_strategy.dart';
+import 'package:spider/novel/beans/chapter_bean.dart';
 import 'package:spider/novel/beans/novel_bean.dart';
 import 'package:spider/novel/beans/read_bean.dart';
-import 'package:spider/novel/fetch_strategy.dart';
 
+import 'package:books/pages/reading/chapters.dart';
+import 'package:books/repository/global_configs.dart';
 import 'package:books/repository/books_repository.dart';
 
 ///阅读页传参
